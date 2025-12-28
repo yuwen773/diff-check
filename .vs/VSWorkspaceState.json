@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\AI.DiffAssistant.GUI",
+    "\\src\\AI.DiffAssistant.GUI\\ViewModels",
+    "\\src\\AI.DiffAssistant.Tests"
+  ],
+  "SelectedNode": "\\src\\AI.DiffAssistant.GUI\\MainWindow.xaml.cs",
+  "PreviewInSolutionExplorer": false
+}

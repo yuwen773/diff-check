@@ -1,0 +1,22 @@
+# 测试文档 A
+
+这是一个用于测试 AI 文档差异助手的示例文件。
+
+## 主要内容
+
+1. 第一条内容
+2. 第二条内容
+3. 第三条内容
+
+代码示例：
+```csharp
+public class HelloWorld
+{
+    public void SayHello()
+    {
+        Console.WriteLine("Hello, World!");
+    }
+}
+```
+
+结束语：这是一个测试文件，用于验证程序功能。

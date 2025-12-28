@@ -1,0 +1,23 @@
+# 测试文档 B
+
+这是一个用于测试 AI 文档差异助手的示例文件。
+
+## 主要内容（已修改）
+
+1. 第一条内容（保持不变）
+2. 第二条内容（已修改）
+3. 第三条内容（已删除）
+4. 新增第四条内容
+
+代码示例：
+```csharp
+public class HelloWorld
+{
+    public void SayHello(string name)
+    {
+        Console.WriteLine($"Hello, {name}!");
+    }
+}
+```
+
+结束语：这是一个测试文件（已修改）。
