@@ -1,0 +1,15 @@
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Debug\net10.0\AI.DiffAssistant.Core.deps.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Debug\net10.0\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Debug\net10.0\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Debug\net10.0\AI.DiffAssistant.Shared.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Debug\net10.0\AI.DiffAssistant.Shared.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.csproj.AssemblyReference.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.AssemblyInfoInputs.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.AssemblyInfo.cs
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.csproj.CoreCompileInputs.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffA.57A82979.Up2Date
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\refint\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Debug\net10.0\ref\AI.DiffAssistant.Core.dll

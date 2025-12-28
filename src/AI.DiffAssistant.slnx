@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="AI.DiffAssistant.Cli/AI.DiffAssistant.Cli.csproj" />
+  <Project Path="AI.DiffAssistant.Core/AI.DiffAssistant.Core.csproj" />
+  <Project Path="AI.DiffAssistant.GUI/AI.DiffAssistant.GUI.csproj" />
+  <Project Path="AI.DiffAssistant.Shared/AI.DiffAssistant.Shared.csproj" />
+  <Project Path="AI.DiffAssistant.Tests/AI.DiffAssistant.Tests.csproj" />
+</Solution>

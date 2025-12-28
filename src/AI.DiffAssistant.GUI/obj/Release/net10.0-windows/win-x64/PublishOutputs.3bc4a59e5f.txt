@@ -1,0 +1,10 @@
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.exe
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Assets\app.ico
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.deps.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.runtimeconfig.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.pdb

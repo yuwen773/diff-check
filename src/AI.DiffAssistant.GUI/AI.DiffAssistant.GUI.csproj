@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\AI.DiffAssistant.Core\AI.DiffAssistant.Core.csproj" />
+    <ProjectReference Include="..\AI.DiffAssistant.Shared\AI.DiffAssistant.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 图标文件复制到输出目录 -->
+    <Content Include="Assets\app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+</Project>

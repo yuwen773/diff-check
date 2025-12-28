@@ -1,0 +1,3 @@
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.deps.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.pdb

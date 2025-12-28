@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "AI.DiffAssistant.GUI/1.0.0": {
+        "dependencies": {
+          "AI.DiffAssistant.Core": "1.0.0",
+          "AI.DiffAssistant.Shared": "1.0.0"
+        },
+        "runtime": {
+          "AI.DiffAssistant.GUI.dll": {}
+        }
+      },
+      "AI.DiffAssistant.Core/1.0.0": {
+        "dependencies": {
+          "AI.DiffAssistant.Shared": "1.0.0"
+        },
+        "runtime": {
+          "AI.DiffAssistant.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AI.DiffAssistant.Shared/1.0.0": {
+        "runtime": {
+          "AI.DiffAssistant.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AI.DiffAssistant.GUI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AI.DiffAssistant.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AI.DiffAssistant.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

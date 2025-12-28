@@ -1,0 +1,9 @@
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.exe
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.deps.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.runtimeconfig.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.pdb

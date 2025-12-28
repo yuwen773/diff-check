@@ -1,0 +1,15 @@
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Release\net10.0-windows\AI.DiffAssistant.Core.deps.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Release\net10.0-windows\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Release\net10.0-windows\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Release\net10.0-windows\AI.DiffAssistant.Shared.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\bin\Release\net10.0-windows\AI.DiffAssistant.Shared.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.csproj.AssemblyReference.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.AssemblyInfoInputs.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.AssemblyInfo.cs
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.csproj.CoreCompileInputs.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffA.57A82979.Up2Date
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\refint\AI.DiffAssistant.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Core\obj\Release\net10.0-windows\ref\AI.DiffAssistant.Core.dll
