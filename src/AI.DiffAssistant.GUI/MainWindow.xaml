@@ -7,257 +7,283 @@
         xmlns:conv="clr-namespace:AI.DiffAssistant.GUI.Converters"
         mc:Ignorable="d"
         Title="AI 文档差异助手 - 配置中心"
-        Height="580" Width="660"
+        Height="600" Width="680"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
-    <Window.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="4"/>
-            <Setter Property="Height" Value="26"/>
-        </Style>
-        <Style TargetType="Button">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="MinWidth" Value="80"/>
-        </Style>
-        <Style TargetType="CheckBox">
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="0,4"/>
-        </Style>
-    </Window.Resources>
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}">
+    <Window.Effect>
+        <DropShadowEffect BlurRadius="16" Opacity="0.3" ShadowDepth="4"/>
+    </Window.Effect>
 
-    <TabControl Margin="8">
-        <!-- Tab 1: AI 服务设置 -->
-        <TabItem Header="AI 服务">
-            <Grid Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <!-- Base URL -->
-                <Grid Grid.Row="0" Margin="0,0,0,4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Base URL:"/>
-                    <TextBox Grid.Column="1"
-                             Text="{Binding BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="AI API 的基础地址"/>
-                </Grid>
-
-                <!-- API Key -->
-                <Grid Grid.Row="1" Margin="0,0,0,4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="API Key:"/>
-                    <PasswordBox Grid.Column="1"
-                                 Name="PasswordBox"
-                                 Height="26"
-                                 Padding="4"
-                                 ToolTip="API 密钥"
-                                 PasswordChanged="PasswordBox_PasswordChanged"
-                                 local:PasswordHelper.Password="{Binding ApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Grid.Column="2"
-                            Content="显示"
-                            Margin="8,0,0,0"
-                            Click="TogglePasswordVisibility_Click"/>
-                </Grid>
-
-                <!-- Model Name -->
-                <Grid Grid.Row="2" Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="Model:"/>
-                    <TextBox Grid.Column="1"
-                             Text="{Binding ModelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             ToolTip="要使用的模型名称，如 gpt-4o"/>
-                </Grid>
-
-                <!-- 分隔线 -->
-                <Separator Grid.Row="3" Margin="0,8" VerticalAlignment="Center"/>
-
-                <!-- 提示词设置标题 -->
-                <TextBlock Grid.Row="4"
-                           Text="提示词设置 (System Prompt)"
+        <!-- 标题栏 -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource SurfaceBrush}"
+                Padding="16,12"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{DynamicResource SeparatorBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="AI 文档差异助手 - 配置中心"
+                           FontSize="15"
                            FontWeight="Bold"
-                           FontSize="13"
-                           Margin="0,0,0,8"/>
-
-                <!-- System Prompt -->
-                <TextBox Grid.Row="5"
-                         Text="{Binding SystemPrompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Height="80"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         AcceptsReturn="True"
-                         ToolTip="系统提示词，控制 AI 的行为和输出格式"/>
-
-                <!-- 分隔线 -->
-                <Separator Grid.Row="6" Margin="0,12,0,12" VerticalAlignment="Center"/>
-
-                <!-- 按钮区域 -->
-                <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12">
-                    <Button Content="测试连接"
-                            Command="{Binding TestConnectionCommand}"
-                            IsEnabled="{Binding IsNotTesting}"
-                            Margin="0,0,8,0"/>
-                    <Button Content="保存配置"
-                            Command="{Binding SaveConfigCommand}"
-                            IsEnabled="{Binding IsNotSaving}"
-                            Margin="8,0,0,0"/>
-                </StackPanel>
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+                <Button Grid.Column="1"
+                        Content="☀/☾"
+                        Width="48"
+                        Height="32"
+                        Command="{Binding ToggleThemeCommand}"
+                        ToolTip="切换深色/浅色主题"
+                        Padding="0"
+                        FontSize="16"
+                        Cursor="Hand"/>
             </Grid>
-        </TabItem>
+        </Border>
 
-        <!-- Tab 2: 系统集成 -->
-        <TabItem Header="系统集成">
-            <Grid Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+        <!-- 主内容区 -->
+        <Border Grid.Row="1" Background="{DynamicResource BackgroundBrush}">
+            <TabControl Margin="12"
+                        Background="{DynamicResource BackgroundBrush}"
+                        BorderThickness="0"
+                        Padding="0">
+                <!-- Tab 1: AI 服务设置 -->
+                <TabItem Header="AI 服务">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                <!-- 注册状态标题 -->
-                <TextBlock Grid.Row="0"
-                           Text="右键菜单注册"
-                           FontWeight="Bold"
-                           FontSize="13"
-                           Margin="0,0,0,12"/>
+                        <!-- Base URL -->
+                        <Grid Grid.Row="0" Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Base URL:"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="AI API 的基础地址"/>
+                        </Grid>
 
-                <!-- 注册状态 -->
-                <Grid Grid.Row="1" Margin="0,0,0,12">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="当前状态:"/>
-                    <TextBlock Grid.Column="1"
-                               Text="{Binding IsRegistered, Converter={conv:BoolToStatusConverter}}"
-                               Foreground="{Binding IsRegistered, Converter={conv:BoolToColorConverter}}"
-                               FontWeight="Bold"/>
-                </Grid>
+                        <!-- API Key -->
+                        <Grid Grid.Row="1" Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="API Key:"/>
+                            <PasswordBox Grid.Column="1"
+                                         Name="PasswordBox"
+                                         Padding="8,4"
+                                         Height="32"
+                                         ToolTip="API 密钥"
+                                         PasswordChanged="PasswordBox_PasswordChanged"
+                                         local:PasswordHelper.Password="{Binding ApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Grid.Column="2"
+                                    Content="👁"
+                                    Width="40"
+                                    Margin="8,0,0,0"
+                                    Padding="0"
+                                    FontSize="14"
+                                    Click="TogglePasswordVisibility_Click"
+                                    ToolTip="显示/隐藏密钥"/>
+                        </Grid>
 
-                <!-- 注册按钮区域 -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
-                    <Button Content="添加到右键菜单"
-                            Command="{Binding RegisterCommand}"
-                            IsEnabled="{Binding NotRegistered}"
-                            Margin="0,0,8,0"/>
-                    <Button Content="从右键移除"
-                            Command="{Binding UnregisterCommand}"
-                            IsEnabled="{Binding IsRegistered}"
-                            Margin="8,0,0,0"/>
-                </StackPanel>
+                        <!-- Model Name -->
+                        <Grid Grid.Row="2" Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Model:"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding ModelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="要使用的模型名称，如 gpt-4o"/>
+                        </Grid>
 
-                <!-- 分隔线 -->
-                <Separator Grid.Row="3" Margin="0,0,0,12" VerticalAlignment="Center"/>
+                        <!-- 分隔线 -->
+                        <Separator Grid.Row="3" Margin="0,8" VerticalAlignment="Center"/>
 
-                <!-- 提示信息 -->
-                <TextBlock Grid.Row="4"
-                           Text="提示: 注册后，按住 Ctrl 选中两个文件，右键选择「AI 差异分析」即可使用"
-                           FontSize="11"
-                           Foreground="Gray"
-                           HorizontalAlignment="Center"
-                           TextWrapping="Wrap"/>
-            </Grid>
-        </TabItem>
+                        <!-- 提示词设置标题 -->
+                        <TextBlock Grid.Row="4"
+                                   Text="提示词设置 (System Prompt)"
+                                   FontWeight="Bold"
+                                   FontSize="13"
+                                   Margin="0,0,0,10"/>
 
-        <!-- Tab 3: 日志设置 -->
-        <TabItem Header="日志设置">
-            <Grid Margin="16">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                        <!-- System Prompt -->
+                        <TextBox Grid.Row="5"
+                                 Text="{Binding SystemPrompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="100"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto"
+                                 AcceptsReturn="True"
+                                 ToolTip="系统提示词，控制 AI 的行为和输出格式"/>
 
-                <!-- 日志启用 -->
-                <CheckBox Grid.Row="0"
-                          Content="启用日志"
-                          IsChecked="{Binding LoggingEnabled, Mode=TwoWay}"
-                          Margin="0,0,0,12"/>
+                        <!-- 分隔线 -->
+                        <Separator Grid.Row="6" Margin="0,16,0,16" VerticalAlignment="Center"/>
 
-                <!-- 日志文件路径 -->
-                <Grid Grid.Row="1" Margin="0,0,0,8">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="日志路径:"/>
-                    <TextBox Grid.Column="1"
-                             Text="{Binding LogPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding LoggingEnabled}"
-                             ToolTip="日志文件路径，支持 %TEMP% 等环境变量"/>
-                    <Button Grid.Column="2"
-                            Content="浏览..."
-                            Command="{Binding BrowseLogPathCommand}"
-                            IsEnabled="{Binding LoggingEnabled}"
-                            Margin="8,0,0,0"/>
-                </Grid>
+                        <!-- 按钮区域 -->
+                        <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="测试连接"
+                                    Command="{Binding TestConnectionCommand}"
+                                    IsEnabled="{Binding IsNotTesting}"
+                                    Margin="0,0,12,0"/>
+                            <Button Content="保存配置"
+                                    Command="{Binding SaveConfigCommand}"
+                                    IsEnabled="{Binding IsNotSaving}"
+                                    Margin="12,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
 
-                <!-- 日志级别 -->
-                <TextBlock Grid.Row="2"
-                           Text="日志级别:"
-                           Margin="0,0,0,4"/>
-                <StackPanel Grid.Row="3" Margin="0,0,0,16">
-                    <CheckBox Content="Error - 错误"
-                              IsChecked="{Binding LogErrorEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding LoggingEnabled}"/>
-                    <CheckBox Content="Warning - 警告"
-                              IsChecked="{Binding LogWarningEnabled, Mode=TwoWay}"
-                              IsEnabled="{Binding LoggingEnabled}"/>
-                </StackPanel>
+                <!-- Tab 2: 系统集成 -->
+                <TabItem Header="系统集成">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
-                <!-- 分隔线 -->
-                <Separator Grid.Row="4" Margin="0,0,0,12" VerticalAlignment="Center"/>
+                        <!-- 注册状态标题 -->
+                        <TextBlock Grid.Row="0"
+                                   Text="右键菜单注册"
+                                   FontWeight="Bold"
+                                   FontSize="13"
+                                   Margin="0,0,0,16"/>
 
-                <!-- 日志操作按钮 -->
-                <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12">
-                    <Button Content="打开日志文件"
-                            Command="{Binding OpenLogFileCommand}"
-                            Margin="0,0,8,0"/>
-                    <Button Content="清除日志"
-                            Command="{Binding ClearLogFileCommand}"
-                            Margin="8,0,0,0"/>
-                </StackPanel>
+                        <!-- 注册状态 -->
+                        <Grid Grid.Row="1" Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="当前状态:"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding IsRegistered, Converter={conv:BoolToStatusConverter}}"
+                                       Foreground="{Binding IsRegistered, Converter={conv:BoolToColorConverter}}"
+                                       FontWeight="Bold"/>
+                        </Grid>
 
-                <!-- 保存提示 -->
-                <TextBlock Grid.Row="6"
-                           Text="注意: 日志配置随主配置一起保存"
-                           FontSize="11"
-                           Foreground="Gray"
-                           HorizontalAlignment="Center"/>
-            </Grid>
-        </TabItem>
-    </TabControl>
+                        <!-- 注册按钮区域 -->
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                            <Button Content="添加到右键菜单"
+                                    Command="{Binding RegisterCommand}"
+                                    IsEnabled="{Binding NotRegistered}"
+                                    Margin="0,0,12,0"/>
+                            <Button Content="从右键移除"
+                                    Command="{Binding UnregisterCommand}"
+                                    IsEnabled="{Binding IsRegistered}"
+                                    Margin="12,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- 分隔线 -->
+                        <Separator Grid.Row="3" Margin="0,0,0,16" VerticalAlignment="Center"/>
+
+                        <!-- 提示信息 -->
+                        <TextBlock Grid.Row="4"
+                                   Text="提示: 按住 Ctrl 选中两个文件，右键选择「AI 差异分析」即可使用"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"/>
+                    </Grid>
+                </TabItem>
+
+                <!-- Tab 3: 日志设置 -->
+                <TabItem Header="日志设置">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 日志启用 -->
+                        <CheckBox Grid.Row="0"
+                                  Content="启用日志"
+                                  IsChecked="{Binding LoggingEnabled, Mode=TwoWay}"
+                                  Margin="0,0,0,16"/>
+
+                        <!-- 日志文件路径 -->
+                        <Grid Grid.Row="1" Margin="0,0,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="日志路径:"/>
+                            <TextBox Grid.Column="1"
+                                     Text="{Binding LogPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     IsEnabled="{Binding LoggingEnabled}"
+                                     ToolTip="日志文件路径，支持 %TEMP% 等环境变量"/>
+                            <Button Grid.Column="2"
+                                    Content="浏览..."
+                                    Command="{Binding BrowseLogPathCommand}"
+                                    IsEnabled="{Binding LoggingEnabled}"
+                                    Margin="8,0,0,0"/>
+                        </Grid>
+
+                        <!-- 日志级别 -->
+                        <TextBlock Grid.Row="2"
+                                   Text="日志级别:"
+                                   Margin="0,0,0,8"/>
+                        <StackPanel Grid.Row="3" Margin="0,0,0,20">
+                            <CheckBox Content="Error - 错误"
+                                      IsChecked="{Binding LogErrorEnabled, Mode=TwoWay}"
+                                      IsEnabled="{Binding LoggingEnabled}"/>
+                            <CheckBox Content="Warning - 警告"
+                                      IsChecked="{Binding LogWarningEnabled, Mode=TwoWay}"
+                                      IsEnabled="{Binding LoggingEnabled}"/>
+                        </StackPanel>
+
+                        <!-- 分隔线 -->
+                        <Separator Grid.Row="4" Margin="0,0,0,16" VerticalAlignment="Center"/>
+
+                        <!-- 日志操作按钮 -->
+                        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <Button Content="打开日志文件"
+                                    Command="{Binding OpenLogFileCommand}"
+                                    Margin="0,0,12,0"/>
+                            <Button Content="清除日志"
+                                    Command="{Binding ClearLogFileCommand}"
+                                    Margin="12,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- 保存提示 -->
+                        <TextBlock Grid.Row="6"
+                                   Text="注意: 日志配置随主配置一起保存"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
+    </Grid>
 </Window>

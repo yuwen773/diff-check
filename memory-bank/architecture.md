@@ -79,17 +79,25 @@ src/
 | `Views/` | XAML 视图文件 |
 | `ViewModels/` | MVVM ViewModels |
 | `Converters/` | 值转换器 |
+| `Themes/` | 主题资源文件（深色/浅色） |
 | `App.xaml` | WPF 应用入口资源字典 |
 | `MainWindow.xaml` | 配置中心主窗口 |
 
 **核心类**:
 | 类名 | 作用 |
 |------|------|
-| `MainViewModel` | 主窗口 ViewModel，实现 INotifyPropertyChanged，包含配置管理、连接测试、右键菜单注册等业务逻辑 |
-| `MainWindow` | 主窗口视图，处理 UI 事件和密码显示切换 |
+| `MainViewModel` | 主窗口 ViewModel，实现 INotifyPropertyChanged，包含配置管理、连接测试、右键菜单注册、主题切换等业务逻辑 |
+| `MainWindow` | 主窗口视图，处理 UI 事件、密码显示切换、主题切换 |
 | `BoolToStatusConverter` | 布尔值到注册状态文本的转换器 |
 | `BoolToColorConverter` | 布尔值到颜色的转换器（已集成/未集成状态颜色） |
 | `RelayCommand` | 简单的 ICommand 实现 |
+
+**主题系统**:
+| 文件 | 作用 |
+|------|------|
+| `Themes/DarkTheme.xaml` | 深色主题资源字典（背景 #1E1E1E，强调色 #0078D4） |
+| `Themes/LightTheme.xaml` | 浅色主题资源字典（背景 #FFFFFF） |
+| `App.xaml.cs` | 主题管理器（IsDarkTheme、ToggleTheme、ApplyTheme） |
 
 **设计模式**: MVVM（Model-View-ViewModel）
 

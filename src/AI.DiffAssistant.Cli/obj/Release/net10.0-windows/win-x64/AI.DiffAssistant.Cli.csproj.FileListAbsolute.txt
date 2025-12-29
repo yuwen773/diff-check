@@ -18,3 +18,4 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Cli.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Cli.genruntimeconfig.cache
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\ref\AI.DiffAssistant.Cli.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Cli.sourcelink.json

@@ -55,6 +55,7 @@ public class MainViewModel : INotifyPropertyChanged
         OpenLogFileCommand = new RelayCommand(_ => OpenLogFile());
         ClearLogFileCommand = new RelayCommand(_ => ClearLogFile());
         BrowseLogPathCommand = new RelayCommand(_ => BrowseLogPath());
+        ToggleThemeCommand = new RelayCommand(_ => ToggleTheme());
 
         // 加载现有配置
         LoadConfig();
@@ -165,10 +166,16 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand SaveConfigCommand { get; }
     public ICommand RegisterCommand { get; }
     public ICommand UnregisterCommand { get; }
+    public ICommand ToggleThemeCommand { get; }
 
     #endregion
 
     #region 业务逻辑
+
+    private void ToggleTheme()
+    {
+        App.ToggleTheme();
+    }
 
     private void LoadConfig()
     {

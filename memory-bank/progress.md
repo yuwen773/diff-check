@@ -354,3 +354,71 @@ dotnet publish -c Release -r win-x64 --self-contained false -o publish AI.DiffAs
 | GUI 可执行文件 | `src/publish/AI.DiffAssistant.GUI.exe` |
 
 ---
+
+## 阶段九：GUI 界面现代化 ✅ 已完成
+
+**完成日期**: 2025-12-29
+
+### 步骤 9.1 - 主题系统设计 ✅
+**完成内容**:
+1. 创建深色主题资源文件 `Themes/DarkTheme.xaml`：
+   - 定义背景色 `#1E1E1E`
+   - 定义强调色 `#0078D4`
+   - 定义成功/警告/错误颜色
+2. 创建浅色主题资源文件 `Themes/LightTheme.xaml`：
+   - 定义背景色 `#FFFFFF`
+   - 定义对应的浅色系颜色
+
+**文件位置**:
+- `src/AI.DiffAssistant.GUI/Themes/DarkTheme.xaml`
+- `src/AI.DiffAssistant.GUI/Themes/LightTheme.xaml`
+
+### 步骤 9.2 - 全局样式定义 ✅
+**完成内容**:
+1. 更新 `App.xaml` 添加全局样式：
+   - 圆角按钮样式（带悬停/按下效果）
+   - TextBox/PasswordBox 样式
+   - TabItem 自定义样式
+   - Separator 样式
+2. 使用 `DynamicResource` 绑定主题颜色
+
+**文件位置**:
+- `src/AI.DiffAssistant.GUI/App.xaml`
+
+### 步骤 9.3 - 主窗口 UI 优化 ✅
+**完成内容**:
+1. 添加窗口阴影效果 (`DropShadowEffect`)
+2. 添加自定义标题栏
+3. 添加主题切换按钮（☀/☾）
+4. 优化布局间距和边距
+5. 移除原生窗口边框
+
+**文件位置**:
+- `src/AI.DiffAssistant.GUI/MainWindow.xaml`
+
+### 步骤 9.4 - 主题切换逻辑 ✅
+**完成内容**:
+1. 更新 `App.xaml.cs` 添加主题管理：
+   - `IsDarkTheme` 静态属性
+   - `ToggleTheme()` 静态方法
+   - `ApplyTheme()` 动态切换主题资源
+2. 更新 `MainViewModel.cs`：
+   - 添加 `ToggleThemeCommand` 命令
+   - 调用 `App.ToggleTheme()` 实现切换
+
+**文件位置**:
+- `src/AI.DiffAssistant.GUI/App.xaml.cs`
+- `src/AI.DiffAssistant.GUI/ViewModels/MainViewModel.cs`
+
+### 验证结果
+- `dotnet build` ✅ 通过（所有项目）
+- `dotnet publish` ✅ GUI 和 CLI 均发布成功
+- 手动测试 ✅ 主题切换功能正常
+
+### 生成物
+| 文件 | 位置 |
+|------|------|
+| GUI 可执行文件 | `src/publish/AI.DiffAssistant.GUI.exe` |
+| CLI 可执行文件 | `src/publishcli/AI.DiffAssistant.Cli.exe` |
+
+---
