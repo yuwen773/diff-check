@@ -18,3 +18,15 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Debug\net10.0-windows\AI.DiffAssistant.Cli.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Debug\net10.0-windows\AI.DiffAssistant.Cli.genruntimeconfig.cache
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Debug\net10.0-windows\ref\AI.DiffAssistant.Cli.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\DocumentFormat.OpenXml.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\DocumentFormat.OpenXml.Framework.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\Microsoft.Toolkit.Uwp.Notifications.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.Fonts.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.Package.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.Tokenization.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.Tokens.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\UglyToad.PdfPig.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Debug\net10.0-windows\System.IO.Packaging.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Debug\net10.0-windows\AI.DiffAssistant.Cli.sourcelink.json

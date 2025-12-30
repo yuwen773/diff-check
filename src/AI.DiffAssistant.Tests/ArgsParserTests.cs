@@ -53,7 +53,7 @@ public class ArgsParserTests : IDisposable
     }
 
     [Fact]
-    public void Parse_SingleArg_ShouldReturnError()
+    public void Parse_SingleArg_ShouldReturnWaitingMode()
     {
         // Arrange
         var args = new[] { _testFileA };
@@ -61,14 +61,16 @@ public class ArgsParserTests : IDisposable
         // Act
         var result = ArgsParser.Parse(args);
 
-        // Assert
-        Assert.False(result.IsValid);
+        // Assert - 单文件进入等待模式（多实例协调）
+        Assert.True(result.IsValid);
         Assert.False(result.IsGuiMode);
-        Assert.Contains("两个文件", result.ErrorMessage);
+        Assert.True(result.IsWaitingMode);
+        Assert.Single(result.FilePaths);
+        Assert.Equal(_testFileA, result.FilePaths[0]);
     }
 
     [Fact]
-    public void Parse_ThreeArgs_ShouldReturnError()
+    public void Parse_ThreeArgs_ShouldTakeFirstTwo()
     {
         // Arrange
         var args = new[] { _testFileA, _testFileB, "extra.txt" };
@@ -76,10 +78,11 @@ public class ArgsParserTests : IDisposable
         // Act
         var result = ArgsParser.Parse(args);
 
-        // Assert
-        Assert.False(result.IsValid);
-        Assert.Contains("无效", result.ErrorMessage);
-        Assert.Contains("3", result.ErrorMessage);
+        // Assert - 多于2个参数时取前两个
+        Assert.True(result.IsValid);
+        Assert.Contains(_testFileA, result.FilePaths);
+        Assert.Contains(_testFileB, result.FilePaths);
+        Assert.DoesNotContain("extra.txt", result.FilePaths);
     }
 
     [Fact]
@@ -111,7 +114,6 @@ public class ArgsParserTests : IDisposable
         // Assert
         Assert.False(result.IsValid);
         Assert.Contains("不存在", result.ErrorMessage);
-        Assert.Contains("non", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]

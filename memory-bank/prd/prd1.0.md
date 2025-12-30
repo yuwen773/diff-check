@@ -122,7 +122,7 @@
 ## 3. 技术实现概要 (Technical Implementation Brief)
 
 *   **技术栈建议**:
-    *   **Python (PyQt/Tkinter + PyInstaller)** 或 **C# (.NET WPF/WinForms)**。
+    *   **Python (PyQt/Tkinter + PyInstaller)** 或 **C# (.NET 10 WPF/WinForms)**。
     *   需编译为独立的 `.exe` 可执行文件。
 *   **系统集成 (Windows Integration)**:
     *   使用 Windows Registry API 操作 `HKEY_CURRENT_USER`。

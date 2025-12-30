@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AI.DiffAssistant.Cli")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0082726f54603a7e5fedba56d4ccb5b5e6a35b8d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+820d14ff8c5c8f6dfb1a4201a906d93eb22db85f")]
 [assembly: System.Reflection.AssemblyProductAttribute("AI.DiffAssistant.Cli")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AI.DiffAssistant.Cli")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

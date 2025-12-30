@@ -124,7 +124,9 @@ public class DiffAnalyzer
         var sb = new StringBuilder();
         sb.AppendLine($"请对比以下两份文档的差异：");
         sb.AppendLine();
-        sb.AppendLine($"**文件 A: {fileA.FileName}** (编码: {fileA.Encoding.EncodingName})");
+        var encodingA = fileA.Encoding?.EncodingName ?? "N/A (docx/pdf)";
+        var encodingB = fileB.Encoding?.EncodingName ?? "N/A (docx/pdf)";
+        sb.AppendLine($"**文件 A: {fileA.FileName}** (编码: {encodingA})");
         if (truncateA.IsTruncated)
         {
             sb.AppendLine($"[注意：内容已截断，仅保留前 {truncateA.Percentage}%]");
@@ -132,7 +134,7 @@ public class DiffAnalyzer
         sb.AppendLine("---");
         sb.AppendLine(fileA.Content);
         sb.AppendLine();
-        sb.AppendLine($"**文件 B: {fileB.FileName}** (编码: {fileB.Encoding.EncodingName})");
+        sb.AppendLine($"**文件 B: {fileB.FileName}** (编码: {encodingB})");
         if (truncateB.IsTruncated)
         {
             sb.AppendLine($"[注意：内容已截断，仅保留前 {truncateB.Percentage}%]");

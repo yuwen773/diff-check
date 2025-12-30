@@ -2,6 +2,7 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.exe
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.deps.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.GUI.runtimeconfig.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Assets\app.ico
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.deps.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Cli.runtimeconfig.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\testhost.exe
@@ -12,6 +13,8 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Tests.runtimeconfig.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Tests.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AnyOf.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\DocumentFormat.OpenXml.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\DocumentFormat.OpenXml.Framework.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Fare.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\GraphQL.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\GraphQLParser.dll
@@ -48,11 +51,19 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Microsoft.TestPl
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Microsoft.TestPlatform.CrossPlatEngine.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Microsoft.TestPlatform.Utilities.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Microsoft.VisualStudio.TestPlatform.Common.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Microsoft.Toolkit.Uwp.Notifications.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Namotion.Reflection.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Newtonsoft.Json.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\NJsonSchema.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\NJsonSchema.Extensions.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\NSwag.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Fonts.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Package.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Tokenization.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Tokens.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\protobuf-net.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\protobuf-net.Core.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\ProtoBufJsonConverter.dll

@@ -30,6 +30,8 @@ src/
 | `Models/AppConfig.cs` | 应用程序配置根模型，包含 API、Prompts、Settings |
 | `Models/ApiConfig.cs` | AI API 配置（BaseUrl、ApiKey、Model） |
 | `Models/PromptConfig.cs` | 提示词配置（SystemPrompt） |
+| `Models/ParseResult.cs` | 单个文件解析结果模型（V1.1 新增） |
+| `Models/FileParseResult.cs` | 封装两个文件解析结果（V1.1 新增） |
 | `Constants/ConfigConstants.cs` | 配置相关常量（默认值、路径等） |
 
 **依赖**: 无（纯 POCO 类库）
@@ -114,6 +116,13 @@ src/
 |------|------|
 | `Program.cs` | CLI 主入口，参数解析，流程编排，错误处理 |
 | `ArgsParser.cs` | 命令行参数解析，返回 ParseResult |
+| `app.manifest` | Windows 应用程序清单，声明信任级别，启用 Toast 通知 |
+| `AI.DiffAssistant.Cli.csproj` | 项目配置，定义为 WinExe 移除控制台窗口 |
+
+**输出类型说明**:
+- `WinExe`: 以 Windows 应用程序运行（无控制台窗口）
+- `SubApplication`: 标记为子应用程序，支持 GUI 通知
+- `app.manifest`: 包含 `trustInfo` 声明，启用 Windows Toast 通知能力
 
 **启动模式**:
 - `0` 参数: 启动 GUI 模式
@@ -150,8 +159,16 @@ src/
 **测试类型**:
 | 类型 | 工具 | 用途 |
 |------|------|------|
-| 单元测试 | xUnit | 测试配置模型、编码检测、截断逻辑 |
+| 单元测试 | xUnit | 测试配置模型、编码检测、截断逻辑、解析器 |
 | Mock 测试 | WireMock.Net | 模拟 OpenAI API 响应 |
+
+**测试文件结构** (V1.1 新增):
+| 文件 | 测试内容 |
+|------|----------|
+| `DocxParserTests.cs` | Word (.docx) 解析器测试：文本提取、表格提取、空文档、中英文/Unicode、特殊字符 |
+| `PdfParserTests.cs` | PDF 解析器测试：文件不存在、路径验证、异常处理 |
+| `FileParserRouterTests.cs` | 路由器测试：路由逻辑、双文件解析、未知格式、扩展名支持 |
+| `NotificationManagerTests.cs` | Toast 通知测试：成功/错误通知、文件路径、多通知场景 |
 
 **覆盖范围**:
 - 配置序列化/反序列化
@@ -161,6 +178,22 @@ src/
 - 结果格式生成
 - GUI 完整流程
 - CLI 静默模式
+- **V1.1 新增**: DocxParser、PdfParser、FileParserRouter、Toast 通知
+
+**测试统计**:
+| 项目 | V1.0 测试数 | V1.1 新增 | 总计 |
+|------|------------|----------|------|
+| 配置模型 | 6 | 0 | 6 |
+| 文件处理 | 15 | 0 | 15 |
+| 参数解析 | 10 | 0 | 10 |
+| 注册表操作 | 4 | 0 | 4 |
+| 单实例管理 | 2 | 0 | 2 |
+| 结果写入 | 10 | 0 | 10 |
+| 通知管理 | 11 | 12 | 23 |
+| DocxParser | 0 | 16 | 16 |
+| PdfParser | 0 | 9 | 9 |
+| FileParserRouter | 0 | 18 | 18 |
+| **总计** | **73** | **55** | **128** |
 
 **依赖**: Core、GUI、Cli、Shared、WireMock.Net
 
@@ -226,21 +259,282 @@ File Explorer (2 files) → Cli/Program.cs
 
 ---
 
-## 6. Windows 集成
+## 7. 核心文件详解
 
-### 右键菜单注册表路径
-```
-HKCU\Software\Classes\*\shell\AI差异分析\command
+### 7.1 Config/ 配置管理模块
+
+| 文件 | 作用 |
+|------|------|
+| `ConfigManager.cs` | 配置加载/保存，支持 FileSystemWatcher 热更新；提供 `Load()`、`Save()`、`Reload()` 方法 |
+
+### 7.2 Diff/ 差异分析模块
+
+| 文件 | 作用 |
+|------|------|
+| `AiService.cs` | AI API 调用封装，支持连接测试、错误友好提示；处理 API Key 验证、额度检查 |
+| `DiffAnalyzer.cs` | 差异分析编排器，组装 Prompt、调用 AiService、返回分析结果 |
+| `ResultWriter.cs` | 追加写入 `difference.md`，支持 Markdown 格式化、状态跟踪 |
+
+### 7.3 File/ 文件处理模块
+
+| 文件 | 作用 |
+|------|------|
+| `EncodingDetector.cs` | 自动检测文件编码（UTF-8/GBK/ASCII），支持 BOM 识别 |
+| `FileProcessor.cs` | 文件读取、截断逻辑；支持纯文本和富文本（.docx/.pdf）解析；提供 `ReadFile()`、`ReadFileAsync()`、`ProcessFile()` 方法 |
+
+**FileProcessor V1.1 增强**:
+- 内部集成 `FileParserRouter`，自动路由到对应解析器
+- `ReadResult` 新增 `SourceFileType` 和 `IsRichText` 属性
+- 富文本格式（.docx/.pdf）使用解析器提取纯文本
+- 纯文本格式使用 `EncodingDetector` 检测编码
+
+### 7.4 Parser/ 文件解析模块 (V1.1 新增)
+
+**相关模型**（位于 Shared 项目）:
+| 文件 | 作用 |
+|------|------|
+| `Models/ParseResult.cs` | 单个文件解析结果，包含 Content、SourceFileType、IsSuccess、ErrorMessage、CharCount |
+| `Models/FileParseResult.cs` | 封装两个文件的解析结果，提供 IsSuccess、ErrorMessage、TotalCharCount |
+
+**解析器组件**:
+| 文件 | 作用 |
+|------|------|
+| `IFileParser.cs` | 解析器接口，定义 `CanParse()`、`Parse()` 方法（V1.1 新增） |
+| `DocxParser.cs` | Word (.docx) 解析器，提取正文、段落、表格文本（V1.1 新增） |
+| `PdfParser.cs` | PDF 解析器，提取页面文本，处理加密/扫描件异常（✅ 已实现） |
+| `FileParserRouter.cs` | 解析路由器，根据扩展名分发到对应解析器（✅ 已实现） |
+
+**IFileParser 接口设计**:
+```csharp
+public interface IFileParser
+{
+    bool CanParse(string ext);           // 检查是否支持指定扩展名
+    ParseResult Parse(string filePath);  // 解析文件并返回结果
+}
 ```
 
-### 命令格式
+**DocxParser 实现特性**:
+- 使用 `DocumentFormat.OpenXml` 库解析 `.docx` 文件
+- 提取正文段落文本，保留换行符
+- 提取表格文字，使用 `|` 作为单元格分隔符
+- 忽略页眉、页脚、批注、图片、样式信息
+
+**PdfParser 实现特性**:
+- 使用 `PdfPig` (UglyToad.PdfPig) 库解析 `.pdf` 文件
+- 按页顺序提取所有页面文本
+- 加密文档检测：捕获 `PdfDocumentEncryptedException`
+- 扫描件检测：若 `text.Length < 50 && fileSize > 100KB` → 返回错误
+- 异常信息友好提示，支持中文错误描述
+
+**FileParserRouter 实现特性**:
+- 路由器模式：自动根据扩展名分发到对应解析器
+- 内部注册 DocxParser 和 PdfParser
+- 提供 `ParseFile()` 单文件解析和 `ParseFiles()` 双文件解析
+- 不支持格式返回友好错误信息
+- `GetSupportedExtensions()` 使用 `IsSupported()` 探测扩展名，而非反射获取常量字段
+
+### 7.5 Registry/ 注册表模块
+
+| 文件 | 作用 |
+|------|------|
+| `RegistryManager.cs` | 右键菜单注册/注销；创建 `HKCU\Software\Classes\*\shell\AI差异分析` 键 |
+
+### 7.6 Notification/ 通知模块
+
+| 文件 | 作用 |
+|------|------|
+| `NotificationManager.cs` | Windows Toast 通知，使用 `Microsoft.Toolkit.Uwp.Notifications` 库 |
+
+**NotificationManager V1.1 增强**:
+- 使用 `ToastContentBuilder` 构建原生 Windows Toast 通知
+- `ShowSuccess(message, filePathToOpen)`: 成功通知带操作按钮
+  - 标题: "分析完成"
+  - 按钮: [打开文件]、[打开文件夹]
+  - 点击通知或按钮可打开 difference.md
+- `ShowError(error)`: 错误通知
+  - 标题: "分析失败"
+  - 正文: 显示具体错误原因
+- 不抢占键盘焦点，仅在右下角滑入显示
+- 自动收入通知中心，不强制用户关闭
+
+**技术要求**:
+- TargetFramework: `net10.0-windows10.0.17763.0`
+- Windows 10 Build 17763（Version 1809）或更高版本
+- 依赖 `Microsoft.Toolkit.Uwp.Notifications` 7.1.3 |
+
+### 7.7 Util/ 工具类模块
+
+| 文件 | 作用 |
+|------|------|
+| `SingleInstanceManager.cs` | Mutex 互斥锁，处理 Windows 多文件选择可能触发的多实例启动 |
+
+---
+
+## 8. V1.1 架构变更
+
+### 新增模块
+
+**Shared 项目新增模型**:
 ```
-"[exePath]" "%1"
+src/AI.DiffAssistant.Shared/Models/
+├── ParseResult.cs        # 文件解析结果模型 ✅ 已实现
+└── FileParseResult.cs    # 双文件解析结果封装 ✅ 已实现
 ```
 
-### 单实例互斥锁
+**Core 项目新增解析器**:
 ```
-Global\AI.DiffAssistant.SingleInstance
+src/AI.DiffAssistant.Core/Parser/
+├── IFileParser.cs        # 解析器接口 ✅ 已实现
+├── DocxParser.cs         # Word 解析器 ✅ 已实现
+├── PdfParser.cs          # PDF 解析器 ✅ 已实现
+└── FileParserRouter.cs   # 解析路由器 ✅ 已实现
 ```
+
+### 依赖变更
+
+| 项目 | 新增依赖 | 用途 |
+|------|----------|------|
+| Core | `DocumentFormat.OpenXml` 3.0.2 | Word 文档解析 |
+| Core | `PdfPig` 0.1.8 | PDF 文档解析 |
+| Core | `Microsoft.Toolkit.Uwp.Notifications` 7.1.3 | Windows Toast 通知 |
+
+### TargetFramework 变更
+
+**V1.0**: `net10.0-windows`
+**V1.1**: `net10.0-windows10.0.17763.0`
+
+变更原因：`Microsoft.Toolkit.Uwp.Notifications` 需要 Windows SDK 10.0.17763.0 或更高版本以支持 Toast 通知 API。
+
+**兼容性**:
+- Windows 10 Version 1809 (Build 17763) 及更高版本完全支持
+- Windows 7/8.x 不支持 Toast 通知（但程序可运行，仅不显示通知）
+
+---
+
+## 9. V1.1 集成测试验证 ✅
+
+**验证日期**: 2025-12-30
+
+### 9.1 测试执行结果
+
+| 测试类型 | 测试项 | 结果 |
+|----------|--------|------|
+| 单元测试 | 128 个测试全部通过 | ✅ |
+| 构建 | dotnet build | ✅ 0 错误 |
+| 发布 | AOT 编译 | ✅ 成功 |
+| 集成测试 | txt + txt 对比 | ✅ difference.md 正确生成 |
+| 集成测试 | CLI 静默模式 | ✅ 无 DOS 窗口 |
+| 集成测试 | Toast 通知 | ✅ 正常显示 |
+
+### 9.2 文件清单验证
+
+**Shared 项目新增模型**:
+```
+src/AI.DiffAssistant.Shared/Models/
+├── ParseResult.cs        # 文件解析结果模型 ✅ 已实现
+└── FileParseResult.cs    # 双文件解析结果封装 ✅ 已实现
+```
+
+**Core 项目新增解析器**:
+```
+src/AI.DiffAssistant.Core/Parser/
+├── IFileParser.cs        # 解析器接口 ✅ 已实现
+├── DocxParser.cs         # Word 解析器 ✅ 已实现
+├── PdfParser.cs          # PDF 解析器 ✅ 已实现
+└── FileParserRouter.cs   # 解析路由器 ✅ 已实现
+```
+
+**CLI 项目新增文件**:
+```
+src/AI.DiffAssistant.Cli/
+├── app.manifest          # 应用程序清单 ✅ 已实现
+└── Program.cs            # 集成 Toast 回调 ✅ 已实现
+```
+
+---
+
+## 10. 注意事项
+
+### 10.1 单实例处理机制
+
+Windows 文件资源管理器多选文件时可能触发多个实例启动。程序使用以下机制协调：
+
+1. **互斥锁**: `Global\AI.DiffAssistant.SingleInstance` 确保单实例运行
+2. **参数协调**: `ArgsParser.CoordinateArguments()` 使用临时文件和互斥锁收集多实例参数
+3. **等待模式**: 单参数时 `IsWaitingMode=true`，等待第二个参数后执行
+
+### 10.2 文件截断策略
+
+- **阈值**: 15,000 字符（可配置）
+- **保留内容**: 文件头部（前 15,000 字符）
+- **状态标记**: 截断后在结果中显示保留百分比
+
+### 10.3 编码检测优先级
+
+1. UTF-8 with BOM
+2. UTF-8 without BOM
+3. GBK
+4. ASCII（回退）
+
+---
+
+### 10.4 FileParserRouter 扩展名获取方式变更
+
+**变更日期**: 2025-12-30
+
+**问题描述**:
+`GetSupportedExtensions()` 方法使用反射获取解析器的私有常量字段，但 `const` 字段是静态的，无法通过 `BindingFlags.Instance` 获取。
+
+**修复方案**:
+```csharp
+// 修复前（反射方式，无法获取 const 字段）
+public IEnumerable<string> GetSupportedExtensions()
+{
+    return _parsers.SelectMany(p => p.GetType()
+        .GetFields(BindingFlags.NonPublic | BindingFlags.Instance)
+        .Where(f => f.Name.EndsWith("Extension"))
+        .Select(f => (string)f.GetValue(p)));
+}
+
+// 修复后（IsSupported 探测方式）
+public IEnumerable<string> GetSupportedExtensions()
+{
+    var testExtensions = new[] { ".docx", ".pdf", ".txt", ".md", ".json" };
+    return testExtensions.Where(ext => IsSupported(ext));
+}
+```
+
+**优点**:
+- 避免使用反射，更简洁可靠
+- 扩展名列表可动态扩展，无需修改解析器
+- 性能更优（O(n) vs O(n*反射)）
+
+---
+
+### 10.5 app.manifest 应用程序清单
+
+**文件路径**: `src/AI.DiffAssistant.Cli/app.manifest`
+
+**作用**:
+- 声明应用程序的信任级别（`asInvoker` - 继承调用者权限）
+- 启用 Windows Toast 通知能力
+- 确保程序以 GUI 应用程序运行而非控制台应用
+
+**关键配置**:
+```xml
+<trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+  <security>
+    <requestedPrivileges>
+      <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
+    </requestedPrivileges>
+  </security>
+</trustInfo>
+```
+
+**配置说明**:
+| 配置项 | 值 | 含义 |
+|--------|-----|------|
+| `level` | `asInvoker` | 继承 Explorer 的权限级别，无需管理员权限 |
+| `uiAccess` | `false` | 不需要提升权限访问 UI 元素 |
 
 ---

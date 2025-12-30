@@ -621,3 +621,167 @@ if (string.IsNullOrWhiteSpace(config.Api.BaseUrl) ||
 ### 修复日期
 
 2025-12-28
+
+---
+
+## 问题 #006: Toast 通知不弹出
+
+### 问题描述
+
+差异分析完成后，没有弹出 Windows Toast 通知，用户无法得知分析已完成。
+
+### 问题根因
+
+**`app.manifest` 缺少 `windowsToastNotifications` 能力声明**
+
+`Microsoft.Toolkit.Uwp.Notifications` 库需要在应用程序清单中声明 Toast 通知能力才能正常工作。
+
+原 `app.manifest` 配置：
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v3">
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+</assembly>
+```
+
+缺少 `windowsToastNotifications` 声明，导致 Toast 通知被系统阻止。
+
+### 影响范围
+
+- 分析成功时无成功通知
+- 分析失败时无错误通知
+- 用户无法得知处理结果
+
+### 修复方案
+
+更新 `src/AI.DiffAssistant.Cli/app.manifest`，添加 Toast 通知能力：
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v3">
+  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+    <security>
+      <requestedPrivileges>
+        <requestedExecutionLevel level="asInvoker" uiAccess="false"/>
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+
+  <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <!-- 启用 Windows Toast 通知 -->
+      <windowsToastNotifications xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
+        <enabled>true</enabled>
+      </windowsToastNotifications>
+    </windowsSettings>
+  </application>
+</assembly>
+```
+
+### 技术说明
+
+- `windowsToastNotifications` 是 Windows 10/11 原生 Toast 通知所需的能力声明
+- 需要 `net10.0-windows10.0.17763.0` 或更高版本的 TargetFramework
+- 需要 Windows 10 Version 1809 (Build 17763) 或更高版本
+
+### 状态
+
+- [x] 问题已确认
+- [x] 修复中
+- [x] 已完成
+
+### 修复文件
+
+- `src/AI.DiffAssistant.Cli/app.manifest` - 添加 windowsToastNotifications 能力声明
+
+### 发现日期
+
+2025-12-30
+
+### 修复日期
+
+2025-12-30
+
+---
+
+## 问题 #007: ToastContentBuilder.Show 方法找不到
+
+### 问题描述
+
+差异分析完成后，Toast 通知失败，错误日志显示：
+```
+Method not found: 'Void Microsoft.Toolkit.Uwp.Notifications.ToastContentBuilder.Show()'.
+Object reference not set to an instance of an object.
+```
+
+### 问题根因
+
+**1. CLI 项目未直接引用 NuGet 包**
+
+CLI 项目 (`AI.DiffAssistant.Cli.csproj`) 仅通过项目引用依赖 Core 项目：
+```xml
+<ProjectReference Include="..\AI.DiffAssistant.Core\AI.DiffAssistant.Core.csproj" />
+```
+
+Core 项目中声明的 `Microsoft.Toolkit.Uwp.Notifications` 包依赖未正确传递到 CLI 项目的发布输出目录。
+
+**2. 旧版本 DLL 缓存**
+
+发布文件夹中可能包含旧版本的 `Microsoft.Toolkit.Uwp.Notifications.dll`，导致方法签名不匹配。
+
+### 影响范围
+
+- 分析成功时无成功通知
+- 分析失败时错误通知也失败
+- 用户无法得知处理结果
+
+### 修复方案
+
+**1. 在 CLI 项目中添加直接 NuGet 引用**
+
+修改 `src/AI.DiffAssistant.Cli/AI.DiffAssistant.Cli.csproj`：
+```xml
+<!-- 确保通知库的 DLL 被复制到输出目录 -->
+<ItemGroup>
+  <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+</ItemGroup>
+```
+
+**2. 清理并重新发布**
+
+```bash
+# 删除旧的发布文件夹
+dotnet clean
+dotnet restore
+dotnet publish -c Release -r win-x64 --self-contained false -o publish
+```
+
+### 技术说明
+
+- `Microsoft.Toolkit.Uwp.Notifications` 7.1.3 的 `ToastContentBuilder.Show()` 方法返回类型为 `void`
+- 确保所有依赖项目的包引用正确传递是 .NET 发布的关键
+- 清理 NuGet 缓存和发布文件夹可以解决 DLL 版本冲突
+
+### 状态
+
+- [x] 问题已确认
+- [x] 修复中
+- [x] 已完成
+
+### 修复文件
+
+- `src/AI.DiffAssistant.Cli/AI.DiffAssistant.Cli.csproj` - 添加直接 NuGet 引用
+
+### 发现日期
+
+2025-12-30
+
+### 修复日期
+
+2025-12-30

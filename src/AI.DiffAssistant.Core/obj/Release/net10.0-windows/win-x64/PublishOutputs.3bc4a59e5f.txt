@@ -1,5 +1,16 @@
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.deps.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Core.pdb
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\DocumentFormat.OpenXml.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\DocumentFormat.OpenXml.Framework.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\Microsoft.Toolkit.Uwp.Notifications.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Fonts.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Package.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Tokenization.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.Tokens.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\UglyToad.PdfPig.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\System.IO.Packaging.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\publish\AI.DiffAssistant.Shared.pdb

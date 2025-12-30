@@ -19,3 +19,14 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Cli.genruntimeconfig.cache
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\ref\AI.DiffAssistant.Cli.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Cli.sourcelink.json
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\DocumentFormat.OpenXml.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\DocumentFormat.OpenXml.Framework.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\Microsoft.Toolkit.Uwp.Notifications.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Fonts.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Package.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Tokenization.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Tokens.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Cli\bin\Release\net10.0-windows\win-x64\System.IO.Packaging.dll

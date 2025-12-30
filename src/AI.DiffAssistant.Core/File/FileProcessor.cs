@@ -1,4 +1,5 @@
 using System.Text;
+using AI.DiffAssistant.Core.Parser;
 
 namespace AI.DiffAssistant.Core.File;
 
@@ -15,7 +16,7 @@ public class ReadResult
     /// <summary>
     /// 检测到的编码
     /// </summary>
-    public Encoding Encoding { get; init; } = Encoding.UTF8;
+    public Encoding? Encoding { get; init; } = Encoding.UTF8;
 
     /// <summary>
     /// 文件路径
@@ -26,6 +27,16 @@ public class ReadResult
     /// 文件名
     /// </summary>
     public string FileName => System.IO.Path.GetFileName(FilePath);
+
+    /// <summary>
+    /// 源文件类型（扩展名）
+    /// </summary>
+    public string? SourceFileType { get; init; }
+
+    /// <summary>
+    /// 是否为富文本格式解析
+    /// </summary>
+    public bool IsRichText => SourceFileType is ".docx" or ".pdf";
 }
 
 /// <summary>
@@ -70,6 +81,16 @@ public class TruncateResult
 public class FileProcessor
 {
     private readonly int _maxLength;
+    private readonly FileParserRouter _router;
+
+    /// <summary>
+    /// 支持的富文本格式
+    /// </summary>
+    private static readonly HashSet<string> RichTextExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".docx",
+        ".pdf"
+    };
 
     /// <summary>
     /// 初始化文件处理器
@@ -78,7 +99,13 @@ public class FileProcessor
     public FileProcessor(int maxLength = 15000)
     {
         _maxLength = maxLength;
+        _router = new FileParserRouter();
     }
+
+    /// <summary>
+    /// 检查是否为富文本格式
+    /// </summary>
+    private static bool IsRichTextFile(string ext) => RichTextExtensions.Contains(ext);
 
     /// <summary>
     /// 读取文件内容并检测编码
@@ -97,17 +124,36 @@ public class FileProcessor
             throw new System.IO.FileNotFoundException($"文件不存在: {filePath}", filePath);
         }
 
-        // 检测编码
-        var encoding = EncodingDetector.Detect(filePath);
+        var ext = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
 
-        // 读取内容
+        // 富文本格式使用解析器
+        if (IsRichTextFile(ext))
+        {
+            var result = _router.ParseFile(filePath);
+            if (!result.IsSuccess)
+            {
+                throw new InvalidOperationException(result.ErrorMessage);
+            }
+
+            return new ReadResult
+            {
+                Content = result.Content,
+                Encoding = null,
+                FilePath = filePath,
+                SourceFileType = result.SourceFileType
+            };
+        }
+
+        // 纯文本格式使用编码检测
+        var encoding = EncodingDetector.Detect(filePath);
         string content = System.IO.File.ReadAllText(filePath, encoding);
 
         return new ReadResult
         {
             Content = content,
             Encoding = encoding,
-            FilePath = filePath
+            FilePath = filePath,
+            SourceFileType = ext
         };
     }
 
@@ -126,7 +172,27 @@ public class FileProcessor
             throw new System.IO.FileNotFoundException($"文件不存在: {filePath}", filePath);
         }
 
-        // 检测编码
+        var ext = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
+
+        // 富文本格式使用解析器
+        if (IsRichTextFile(ext))
+        {
+            var result = _router.ParseFile(filePath);
+            if (!result.IsSuccess)
+            {
+                throw new InvalidOperationException(result.ErrorMessage);
+            }
+
+            return new ReadResult
+            {
+                Content = result.Content,
+                Encoding = null,
+                FilePath = filePath,
+                SourceFileType = result.SourceFileType
+            };
+        }
+
+        // 纯文本格式使用编码检测
         var encoding = EncodingDetector.Detect(filePath);
 
         // 异步读取内容
@@ -138,7 +204,8 @@ public class FileProcessor
         {
             Content = content,
             Encoding = encoding,
-            FilePath = filePath
+            FilePath = filePath,
+            SourceFileType = ext
         };
     }
 

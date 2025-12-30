@@ -57,6 +57,9 @@ public class Program
         // 初始化日志服务
         InitLogging();
 
+        // 初始化通知管理器（延迟初始化，在知道输出路径后更新）
+        NotificationManager.Initialize();
+
         try
         {
             Log(LoggingService.Levels.Info, $"启动 - 参数数量: {args.Length}");
@@ -255,12 +258,14 @@ public class Program
 
             var (readA, truncateA) = await processor.ProcessFileAsync(fileA);
             bool isTruncatedA = truncateA.IsTruncated;
-            Log(LoggingService.Levels.Info, $"文件 - 文件 A 读取完成，编码: {readA.Encoding.EncodingName}");
+            var encodingAName = readA.Encoding?.EncodingName ?? "N/A (docx/pdf)";
+            Log(LoggingService.Levels.Info, $"文件 - 文件 A 读取完成，编码: {encodingAName}");
 
             Log(LoggingService.Levels.Info, $"文件 - 读取文件 B: {fileB}");
             var (readB, truncateB) = await processor.ProcessFileAsync(fileB);
             bool isTruncatedB = truncateB.IsTruncated;
-            Log(LoggingService.Levels.Info, $"文件 - 文件 B 读取完成，编码: {readB.Encoding.EncodingName}");
+            var encodingBName = readB.Encoding?.EncodingName ?? "N/A (docx/pdf)";
+            Log(LoggingService.Levels.Info, $"文件 - 文件 B 读取完成，编码: {encodingBName}");
 
             var isTruncated = isTruncatedA || isTruncatedB;
 
@@ -320,7 +325,8 @@ public class Program
             var fileName = Path.GetFileName(outputPath);
             var message = $"差异分析成功，结果已写入 {fileName}";
             Log(LoggingService.Levels.Info, $"通知 - 成功: {message}");
-            NotificationManager.ShowSuccess(message);
+            // 传递 outputPath 以支持点击通知打开文件
+            NotificationManager.ShowSuccess(message, outputPath);
         }
         catch (Exception ex)
         {

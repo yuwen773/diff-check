@@ -1,2 +1,27 @@
 # publish目录 - AOT编译输出
 publish/
+# .NET 生成文件
+bin/
+obj/
+publish/
+*.exe
+*.dll
+*.pdb
+*.cache
+
+# IDE 文件
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+
+# 系统文件
+nul
+NUL
+*.tmp
+*.log
+
+# 项目特定
+src/publishcli/
+EOF

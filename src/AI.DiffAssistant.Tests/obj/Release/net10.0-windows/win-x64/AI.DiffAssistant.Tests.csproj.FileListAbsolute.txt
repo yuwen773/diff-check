@@ -241,3 +241,15 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\o
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Tests.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Tests.genruntimeconfig.cache
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\obj\Release\net10.0-windows\win-x64\ref\AI.DiffAssistant.Tests.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\Assets\app.ico
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\DocumentFormat.OpenXml.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\DocumentFormat.OpenXml.Framework.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\Microsoft.Toolkit.Uwp.Notifications.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Core.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.DocumentLayoutAnalysis.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Fonts.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Package.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Tokenization.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.Tokens.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\bin\Release\net10.0-windows\win-x64\UglyToad.PdfPig.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Tests\obj\Release\net10.0-windows\win-x64\AI.DiffAssistant.Tests.sourcelink.json

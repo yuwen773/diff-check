@@ -9,3 +9,4 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\win-x64\refint\AI.DiffAssistant.Shared.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\win-x64\AI.DiffAssistant.Shared.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\win-x64\ref\AI.DiffAssistant.Shared.dll
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\win-x64\AI.DiffAssistant.Shared.sourcelink.json

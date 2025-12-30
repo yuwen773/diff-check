@@ -5,6 +5,7 @@ D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\AI.DiffAssistant.Shared.AssemblyInfoInputs.cache
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\AI.DiffAssistant.Shared.AssemblyInfo.cs
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\AI.DiffAssistant.Shared.csproj.CoreCompileInputs.cache
+D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\AI.DiffAssistant.Shared.sourcelink.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\AI.DiffAssistant.Shared.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\refint\AI.DiffAssistant.Shared.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Debug\net10.0\AI.DiffAssistant.Shared.pdb

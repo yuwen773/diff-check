@@ -1,12 +1,12 @@
 # 技术栈推荐方案
 
-## 推荐方案：C# + .NET 8 + WPF
+## 推荐方案：C# + .NET 10 + WPF
 
 ### 核心技术选型
 
 | 层级 | 技术选型 | 选择理由 |
 |------|----------|----------|
-| **运行时** | .NET 8 Windows Desktop | 原生Windows支持，AOT编译可生成独立exe，冷启动<1秒 |
+| **运行时** | .NET 10 Windows Desktop | 原生Windows支持，AOT编译可生成独立exe，冷启动<1秒 |
 | **GUI框架** | WPF | 现代化UI，XAML声明式UI，数据绑定完善，生态成熟 |
 | **HTTP客户端** | System.Net.Http.HttpClient | .NET内置，支持异步，高性能 |
 | **JSON处理** | System.Text.Json | .NET内置，性能优秀 |
@@ -42,7 +42,7 @@ src/
 ### 技术优势
 
 1. **原生Windows体验** - 与系统深度集成，注册表、系统通知、文件资源管理器无缝对接
-2. **轻量级** - .NET 8 AOT编译后exe约20-50MB
+2. **轻量级** - .NET 10 AOT编译后exe约20-50MB
 3. **快速启动** - Native AOT编译，冷启动可控制在500ms内
 4. **开发效率** - C#语言现代化，WPF + MVVM模式成熟稳定
 5. **部署简单** - 单exe文件，无需用户安装.NET运行时
@@ -52,7 +52,7 @@ src/
 
 | 方案 | 优点 | 缺点 |
 |------|------|------|
-| **C# + .NET 8 + WPF**（推荐） | 原生Windows支持，启动快，生态完善 | 需要Visual Studio开发环境 |
+| **C# + .NET 10 + WPF**（推荐） | 原生Windows支持，启动快，生态完善 | 需要Visual Studio开发环境 |
 | Python + PyQt/Tkinter | 开发快，AI生态丰富 | 打包大（100MB+），启动慢（约2-3秒） |
 | C# + WinForms | 更轻量，兼容性好 | UI过时，布局灵活性差 |
 | Electron | 跨平台，UI美观 | 体积极大（100MB+），启动慢，不符合"轻量"定位 |
@@ -60,8 +60,8 @@ src/
 ### 开发环境要求
 
 - IDE: Visual Studio 2022 ( Community版免费 )
-- SDK: .NET 8.0 Windows Desktop
-- 语言: C# 12
+- SDK: .NET 10.0 Windows Desktop
+- 语言: C# 14
 
 ### 构建命令
 

@@ -22,15 +22,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net10.0-windows"
+          "net10.0-windows10.0.17763.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net10.0-windows7.0": {
-            "targetAlias": "net10.0-windows",
+          "net10.0-windows10.0.17763": {
+            "targetAlias": "net10.0-windows10.0.17763.0",
             "projectReferences": {
               "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj": {
                 "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj"
@@ -54,8 +54,14 @@
         "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
-        "net10.0-windows7.0": {
-          "targetAlias": "net10.0-windows",
+        "net10.0-windows10.0.17763": {
+          "targetAlias": "net10.0-windows10.0.17763.0",
+          "dependencies": {
+            "Microsoft.Toolkit.Uwp.Notifications": {
+              "target": "Package",
+              "version": "[7.1.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -67,8 +73,17 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.Windows.SDK.NET.Ref",
+              "version": "[10.0.17763.57, 10.0.17763.57]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.Windows.SDK.NET.Ref.Windows": {
               "privateAssets": "all"
             }
           },
@@ -347,6 +362,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     },
@@ -368,15 +388,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net10.0-windows"
+          "net10.0-windows10.0.17763.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net10.0-windows7.0": {
-            "targetAlias": "net10.0-windows",
+          "net10.0-windows10.0.17763": {
+            "targetAlias": "net10.0-windows10.0.17763.0",
             "projectReferences": {
               "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj": {
                 "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj"
@@ -397,8 +417,22 @@
         "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
-        "net10.0-windows7.0": {
-          "targetAlias": "net10.0-windows",
+        "net10.0-windows10.0.17763": {
+          "targetAlias": "net10.0-windows10.0.17763.0",
+          "dependencies": {
+            "DocumentFormat.OpenXml": {
+              "target": "Package",
+              "version": "[3.0.2, )"
+            },
+            "Microsoft.Toolkit.Uwp.Notifications": {
+              "target": "Package",
+              "version": "[7.1.3, )"
+            },
+            "PdfPig": {
+              "target": "Package",
+              "version": "[0.1.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -410,8 +444,17 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.Windows.SDK.NET.Ref",
+              "version": "[10.0.17763.57, 10.0.17763.57]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.Windows.SDK.NET.Ref.Windows": {
               "privateAssets": "all"
             }
           },
@@ -691,6 +734,11 @@
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
         }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
       }
     },
     "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.GUI\\AI.DiffAssistant.GUI.csproj": {
@@ -711,15 +759,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net10.0-windows"
+          "net10.0-windows10.0.17763.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net10.0-windows7.0": {
-            "targetAlias": "net10.0-windows",
+          "net10.0-windows10.0.17763": {
+            "targetAlias": "net10.0-windows10.0.17763.0",
             "projectReferences": {
               "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj": {
                 "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj"
@@ -743,8 +791,14 @@
         "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
-        "net10.0-windows7.0": {
-          "targetAlias": "net10.0-windows",
+        "net10.0-windows10.0.17763": {
+          "targetAlias": "net10.0-windows10.0.17763.0",
+          "dependencies": {
+            "Microsoft.Toolkit.Uwp.Notifications": {
+              "target": "Package",
+              "version": "[7.1.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -756,8 +810,17 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.Windows.SDK.NET.Ref",
+              "version": "[10.0.17763.57, 10.0.17763.57]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.Windows.SDK.NET.Ref.Windows": {
               "privateAssets": "all"
             },
             "Microsoft.WindowsDesktop.App.WPF": {
@@ -1055,6 +1118,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     },
@@ -1395,6 +1463,11 @@
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
         }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
+        }
       }
     },
     "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Tests\\AI.DiffAssistant.Tests.csproj": {
@@ -1415,15 +1488,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net10.0-windows"
+          "net10.0-windows10.0.17763.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net10.0-windows7.0": {
-            "targetAlias": "net10.0-windows",
+          "net10.0-windows10.0.17763": {
+            "targetAlias": "net10.0-windows10.0.17763.0",
             "projectReferences": {
               "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Cli\\AI.DiffAssistant.Cli.csproj": {
                 "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Cli\\AI.DiffAssistant.Cli.csproj"
@@ -1453,8 +1526,8 @@
         "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
-        "net10.0-windows7.0": {
-          "targetAlias": "net10.0-windows",
+        "net10.0-windows10.0.17763": {
+          "targetAlias": "net10.0-windows10.0.17763.0",
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
@@ -1490,8 +1563,17 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.Windows.SDK.NET.Ref",
+              "version": "[10.0.17763.57, 10.0.17763.57]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.Windows.SDK.NET.Ref.Windows": {
               "privateAssets": "all"
             }
           },
@@ -1770,6 +1852,11 @@
             "System.Xml.XPath": "(,4.3.32767]",
             "System.Xml.XPath.XDocument": "(,5.0.32767]"
           }
+        }
+      },
+      "runtimes": {
+        "win-x64": {
+          "#import": []
         }
       }
     }

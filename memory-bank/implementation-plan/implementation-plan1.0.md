@@ -9,7 +9,7 @@
 
 ### 1.1 创建解决方案和项目结构
 
-**目标**：建立完整的 .NET 8 WPF 项目框架
+**目标**：建立完整的 .NET 10 WPF 项目框架
 
 **步骤 1.1.1**：在 `src/` 目录下创建解决方案文件 `AI.DiffAssistant.sln`
 
@@ -33,7 +33,7 @@
 **验证方法**：
 - 执行 `dotnet restore` 成功，无依赖错误
 - 执行 `dotnet build` 成功，所有项目编译通过
-- 检查 `bin/Debug/net8.0-windows/` 目录下生成正确程序集
+- 检查 `bin/Debug/net10.0-windows/` 目录下生成正确程序集
 
 ---
 
@@ -45,7 +45,7 @@
 ```
 <PropertyGroup>
   <OutputType>WinExe</OutputType>
-  <TargetFramework>net8.0-windows</TargetFramework>
+  <TargetFramework>net10.0-windows</TargetFramework>
   <UseWPF>true</UseWPF>
 </PropertyGroup>
 ```
