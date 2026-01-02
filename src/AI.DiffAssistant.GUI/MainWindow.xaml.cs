@@ -15,6 +15,7 @@ public partial class MainWindow : Window
     private readonly MainViewModel _viewModel;
     private WpfTextBox? _visiblePasswordTextBox; // 用于保存显示密码时创建的 TextBox
     private SystemTrayManager? _systemTray;
+    private bool _allowClose;
 
     public MainWindow()
     {
@@ -103,9 +104,13 @@ public partial class MainWindow : Window
     /// </summary>
     protected override void OnClosing(CancelEventArgs e)
     {
-        // 取消关闭操作，改为最小化到托盘
-        e.Cancel = true;
-        Hide();
+        if (!_allowClose)
+        {
+            // 取消关闭操作，改为最小化到托盘
+            e.Cancel = true;
+            Hide();
+            return;
+        }
 
         base.OnClosing(e);
     }
@@ -117,5 +122,14 @@ public partial class MainWindow : Window
     {
         _systemTray?.Dispose();
         base.OnClosed(e);
+    }
+
+    /// <summary>
+    /// 请求退出应用（绕过最小化到托盘）
+    /// </summary>
+    public void RequestExit()
+    {
+        _allowClose = true;
+        Close();
     }
 }

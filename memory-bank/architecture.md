@@ -4,6 +4,31 @@
 
 ---
 
+## 12. V3.0 架构变更 - 版本下载与关于页面精简
+
+### 新增文件
+
+**Shared 项目新增模型**:
+```
+src/AI.DiffAssistant.Shared/Models/
+└── ReleaseInfo.cs        # 可下载版本信息模型 ✅ 已实现
+```
+
+**Core 项目新增服务**:
+```
+src/AI.DiffAssistant.Core/Release/
+└── ReleaseService.cs     # 版本发布服务 ✅ 已实现
+```
+
+### GUI 变更
+- 主窗口新增“版本下载”页签，展示稳定版版本列表并提供下载入口
+- 关于页面仅显示版本号、作者、官网、版权、更新渠道
+
+### 依赖变更
+- 无新增依赖
+
+---
+
 ## 1. 项目结构概览
 
 ```
@@ -32,6 +57,7 @@ src/
 | `Models/PromptConfig.cs` | 提示词配置（SystemPrompt） |
 | `Models/ParseResult.cs` | 单个文件解析结果模型（V1.1 新增） |
 | `Models/FileParseResult.cs` | 封装两个文件解析结果（V1.1 新增） |
+| `Models/ReleaseInfo.cs` | 可下载版本信息模型（V3.0 新增） |
 | `Constants/ConfigConstants.cs` | 配置相关常量（默认值、路径等） |
 
 **依赖**: 无（纯 POCO 类库）
@@ -52,6 +78,7 @@ src/
 | `File/` | 文件处理 | 编码检测、文件读取、文本截断 |
 | `Registry/` | 注册表操作 | 右键菜单注册/注销 |
 | `Notification/` | 系统通知 | Toast 通知、消息框 |
+| `Release/` | 版本下载 | 稳定版列表获取与解析（V3.0 新增） |
 | `Util/` | 工具类 | 单实例管理 |
 
 **核心类**:
@@ -65,6 +92,7 @@ src/
 | `ResultWriter` | 追加写入 difference.md |
 | `RegistryManager` | 注册表操作，右键菜单管理 |
 | `NotificationManager` | 系统通知，使用 MessageBox Win32 API |
+| `ReleaseService` | 版本下载服务，获取稳定版发布列表（V3.0 新增） |
 | `SingleInstanceManager` | Mutex 互斥锁，处理多实例 |
 
 **依赖**: Shared 项目
@@ -485,7 +513,7 @@ src/AI.DiffAssistant.GUI/
 **职责**: 关于弹窗显示
 
 **显示信息**:
-- 版本号与构建日期
+- 版本号
 - 作者信息
 - 官网链接
 - 版权声明

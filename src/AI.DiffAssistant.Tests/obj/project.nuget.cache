@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3cLAE4TKlRQ=",
+  "dgSpecHash": "Mdn8aZ0ZD8g=",
   "success": true,
-  "projectFilePath": "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Tests\\AI.DiffAssistant.Tests.csproj",
+  "projectFilePath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Tests\\AI.DiffAssistant.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\钰玟\\.nuget\\packages\\anyof\\0.4.0\\anyof.0.4.0.nupkg.sha512",
     "C:\\Users\\钰玟\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",

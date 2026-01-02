@@ -182,182 +182,6 @@
           "bin/placeholder/AI.DiffAssistant.Shared.dll": {}
         }
       }
-    },
-    "net10.0-windows10.0.17763/win-x64": {
-      "DocumentFormat.OpenXml/3.0.2": {
-        "type": "package",
-        "dependencies": {
-          "DocumentFormat.OpenXml.Framework": "3.0.2"
-        },
-        "compile": {
-          "lib/net8.0/DocumentFormat.OpenXml.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/DocumentFormat.OpenXml.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "DocumentFormat.OpenXml.Framework/3.0.2": {
-        "type": "package",
-        "dependencies": {
-          "System.IO.Packaging": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/DocumentFormat.OpenXml.Framework.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/DocumentFormat.OpenXml.Framework.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Toolkit.Uwp.Notifications/7.1.3": {
-        "type": "package",
-        "dependencies": {
-          "System.Drawing.Common": "4.7.0"
-        },
-        "compile": {
-          "lib/net5.0-windows10.0.17763/Microsoft.Toolkit.Uwp.Notifications.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net5.0-windows10.0.17763/Microsoft.Toolkit.Uwp.Notifications.dll": {
-            "related": ".pdb;.xml"
-          }
-        }
-      },
-      "Microsoft.Win32.SystemEvents/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "PdfPig/0.1.8": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/UglyToad.PdfPig.Core.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.DocumentLayoutAnalysis.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Fonts.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Package.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Tokenization.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Tokens.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.dll": {
-            "related": ".Core.pdb;.Core.xml;.DocumentLayoutAnalysis.pdb;.DocumentLayoutAnalysis.xml;.Fonts.pdb;.Fonts.xml;.Package.pdb;.Package.xml;.pdb;.Tokenization.pdb;.Tokenization.xml;.Tokens.pdb;.Tokens.xml;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/UglyToad.PdfPig.Core.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.DocumentLayoutAnalysis.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Fonts.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Package.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Tokenization.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.Tokens.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net6.0/UglyToad.PdfPig.dll": {
-            "related": ".Core.pdb;.Core.xml;.DocumentLayoutAnalysis.pdb;.DocumentLayoutAnalysis.xml;.Fonts.pdb;.Fonts.xml;.Package.pdb;.Package.xml;.pdb;.Tokenization.pdb;.Tokenization.xml;.Tokens.pdb;.Tokens.xml;.xml"
-          }
-        }
-      },
-      "System.Drawing.Common/8.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Win32.SystemEvents": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/System.Drawing.Common.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Drawing.Common.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "System.IO.Packaging/8.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.IO.Packaging.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.IO.Packaging.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
-      "AI.DiffAssistant.Core/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "dependencies": {
-          "AI.DiffAssistant.Shared": "1.0.0",
-          "DocumentFormat.OpenXml": "3.0.2",
-          "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
-          "PdfPig": "0.1.8"
-        },
-        "compile": {
-          "bin/placeholder/AI.DiffAssistant.Core.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/AI.DiffAssistant.Core.dll": {}
-        }
-      },
-      "AI.DiffAssistant.Shared/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "compile": {
-          "bin/placeholder/AI.DiffAssistant.Shared.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/AI.DiffAssistant.Shared.dll": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -786,8 +610,8 @@
         "net10.0-windows10.0.17763": {
           "targetAlias": "net10.0-windows10.0.17763.0",
           "projectReferences": {
-            "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj": {
-              "projectPath": "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj"
+            "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj": {
+              "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj"
             },
             "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj": {
               "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj"
@@ -1129,11 +953,6 @@
           "System.Xml.XPath": "(,4.3.32767]",
           "System.Xml.XPath.XDocument": "(,5.0.32767]"
         }
-      }
-    },
-    "runtimes": {
-      "win-x64": {
-        "#import": []
       }
     }
   },

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OZdQrx8bpKY=",
+  "dgSpecHash": "GaK0V348QD4=",
   "success": true,
-  "projectFilePath": "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj",
+  "projectFilePath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\AI.DiffAssistant.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\钰玟\\.nuget\\packages\\documentformat.openxml\\3.0.2\\documentformat.openxml.3.0.2.nupkg.sha512",
     "C:\\Users\\钰玟\\.nuget\\packages\\documentformat.openxml.framework\\3.0.2\\documentformat.openxml.framework.3.0.2.nupkg.sha512",
