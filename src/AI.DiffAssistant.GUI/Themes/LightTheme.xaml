@@ -21,6 +21,8 @@
     <SolidColorBrush x:Key="AccentBrush" Color="#0078D4"/>
     <SolidColorBrush x:Key="AccentHoverBrush" Color="#1084D8"/>
     <SolidColorBrush x:Key="AccentPressedBrush" Color="#005A9E"/>
+    <SolidColorBrush x:Key="PrimaryBrush" Color="#0078D4"/>
+    <SolidColorBrush x:Key="SecondaryBrush" Color="#F5F5F5"/>
 
     <!-- 成功/警告/错误颜色 -->
     <SolidColorBrush x:Key="SuccessBrush" Color="#28A745"/>

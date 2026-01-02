@@ -209,7 +209,60 @@
                     </Grid>
                 </TabItem>
 
-                <!-- Tab 3: 日志设置 -->
+                <!-- Tab 3: 版本下载 -->
+                <TabItem Header="版本下载">
+                    <Grid Margin="20">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- 标题与刷新 -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
+                            <TextBlock Text="稳定版下载" FontWeight="Bold" FontSize="13" Margin="0,0,12,0"/>
+                            <Button Content="刷新"
+                                    Command="{Binding RefreshReleaseCommand}"
+                                    IsEnabled="{Binding IsNotReleaseLoading}"/>
+                        </StackPanel>
+
+                        <!-- 错误提示 -->
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding ReleaseLoadError}"
+                                   Foreground="Red"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,12"/>
+
+                        <!-- 版本列表 -->
+                        <DataGrid Grid.Row="2"
+                                  ItemsSource="{Binding Releases}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  RowHeight="32">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="版本号" Binding="{Binding Version}" Width="120"/>
+                                <DataGridTextColumn Header="发布日期" Binding="{Binding PublishedAt, StringFormat=yyyy-MM-dd}" Width="120"/>
+                                <DataGridTextColumn Header="平台" Binding="{Binding Platform}" Width="80"/>
+                                <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="*"/>
+                                <DataGridTemplateColumn Header="下载" Width="80">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="下载"
+                                                    Command="{Binding DataContext.DownloadReleaseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    CommandParameter="{Binding}"
+                                                    Padding="6,2"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Tab 4: 日志设置 -->
                 <TabItem Header="日志设置">
                     <Grid Margin="20">
                         <Grid.RowDefinitions>

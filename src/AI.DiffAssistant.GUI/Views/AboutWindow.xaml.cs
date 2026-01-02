@@ -1,4 +1,3 @@
-using System.IO;
 using System.Reflection;
 using System.Windows;
 
@@ -24,11 +23,8 @@ public partial class AboutWindow : Window
         {
             var assembly = Assembly.GetExecutingAssembly();
             var version = assembly.GetName().Version;
-            var buildDate = new FileInfo(assembly.Location).LastWriteTime;
 
-            VersionText.Text = $"版本 {version?.ToString() ?? "1.0.0.0"}\n" +
-                              $"构建日期: {buildDate:yyyy-MM-dd}\n" +
-                              $"运行时: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}";
+            VersionText.Text = $"版本 {version?.ToString() ?? "1.0.0.0"}";
         }
         catch (Exception ex)
         {
