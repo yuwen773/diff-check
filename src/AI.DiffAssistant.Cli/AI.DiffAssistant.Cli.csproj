@@ -33,11 +33,11 @@
   <ItemGroup>
     <Content Include="Assets\diff-check.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>diff-check.ico</TargetPath>
+      <TargetPath>diff-check-cli.ico</TargetPath>
     </Content>
     <Content Include="Assets\diff-check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>diff-check.png</TargetPath>
+      <TargetPath>diff-check-cli.png</TargetPath>
     </Content>
   </ItemGroup>
 

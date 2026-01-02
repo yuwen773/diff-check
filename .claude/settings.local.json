@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(dotnet new sln:*)",
-      "Bash(dotnet new:*)"
+      "Bash(dotnet new:*)",
+      "Bash(dotnet build:*)"
     ]
   }
 }

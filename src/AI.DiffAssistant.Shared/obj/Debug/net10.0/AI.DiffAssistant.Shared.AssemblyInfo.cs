@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AI.DiffAssistant.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+614795b8d6f8ec320f01d5d2663fa74a4b0d1b52")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45f303e86b72f6bd799b2d77219737d1749bf744")]
 [assembly: System.Reflection.AssemblyProductAttribute("AI.DiffAssistant.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AI.DiffAssistant.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

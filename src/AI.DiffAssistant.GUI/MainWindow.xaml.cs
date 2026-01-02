@@ -1,6 +1,9 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using AI.DiffAssistant.GUI.ViewModels;
+using WpfTextBox = System.Windows.Controls.TextBox;
+using WpfButton = System.Windows.Controls.Button;
 
 namespace AI.DiffAssistant.GUI;
 
@@ -10,7 +13,8 @@ namespace AI.DiffAssistant.GUI;
 public partial class MainWindow : Window
 {
     private readonly MainViewModel _viewModel;
-    private TextBox? _visiblePasswordTextBox; // 用于保存显示密码时创建的 TextBox
+    private WpfTextBox? _visiblePasswordTextBox; // 用于保存显示密码时创建的 TextBox
+    private SystemTrayManager? _systemTray;
 
     public MainWindow()
     {
@@ -18,6 +22,25 @@ public partial class MainWindow : Window
         _viewModel = new MainViewModel();
         DataContext = _viewModel;
         PasswordBox.Password = _viewModel.ApiKey;
+
+        // 初始化系统托盘
+        InitializeSystemTray();
+    }
+
+    /// <summary>
+    /// 初始化系统托盘
+    /// </summary>
+    private void InitializeSystemTray()
+    {
+        try
+        {
+            _systemTray = new SystemTrayManager(this);
+            _systemTray.Initialize();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"系统托盘初始化失败: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -41,7 +64,7 @@ public partial class MainWindow : Window
         if (!_isPasswordVisible)
         {
             // 将 PasswordBox 内容复制到 TextBox 并隐藏 PasswordBox
-            _visiblePasswordTextBox = new TextBox
+            _visiblePasswordTextBox = new WpfTextBox
             {
                 Text = PasswordBox.Password,
                 Height = PasswordBox.Height,
@@ -56,7 +79,7 @@ public partial class MainWindow : Window
             parent?.Children.Add(_visiblePasswordTextBox);
             Grid.SetColumn(_visiblePasswordTextBox, index);
 
-            ((Button)sender).Content = "隐藏";
+            ((WpfButton)sender).Content = "隐藏";
             _isPasswordVisible = true;
         }
         else
@@ -69,9 +92,30 @@ public partial class MainWindow : Window
                 parent?.Children.Remove(_visiblePasswordTextBox);
                 parent?.Children.Add(PasswordBox);
                 _visiblePasswordTextBox = null;
-                ((Button)sender).Content = "显示";
+                ((WpfButton)sender).Content = "显示";
                 _isPasswordVisible = false;
             }
         }
+    }
+
+    /// <summary>
+    /// 窗口关闭事件 - 最小化到托盘而不是退出
+    /// </summary>
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        // 取消关闭操作，改为最小化到托盘
+        e.Cancel = true;
+        Hide();
+
+        base.OnClosing(e);
+    }
+
+    /// <summary>
+    /// 窗口已关闭 - 清理资源
+    /// </summary>
+    protected override void OnClosed(EventArgs e)
+    {
+        _systemTray?.Dispose();
+        base.OnClosed(e);
     }
 }

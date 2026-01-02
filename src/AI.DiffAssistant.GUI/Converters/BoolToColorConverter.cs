@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
+using WpfBrushes = System.Windows.Media.Brushes;
 
 namespace AI.DiffAssistant.GUI.Converters;
 
@@ -16,9 +17,9 @@ public class BoolToColorConverter : MarkupExtension, IValueConverter
     {
         if (value is bool isRegistered)
         {
-            return isRegistered ? Brushes.Green : Brushes.Red;
+            return isRegistered ? WpfBrushes.Green : WpfBrushes.Red;
         }
-        return Brushes.Red;
+        return WpfBrushes.Red;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -10,6 +10,7 @@ using AI.DiffAssistant.Core.Diff;
 using AI.DiffAssistant.Core.Logging;
 using AI.DiffAssistant.Core.Registry;
 using AI.DiffAssistant.Shared.Models;
+using WpfMessageBox = System.Windows.MessageBox;
 
 namespace AI.DiffAssistant.GUI.ViewModels;
 
@@ -196,7 +197,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"加载配置失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            WpfMessageBox.Show($"加载配置失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -204,19 +205,19 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (string.IsNullOrWhiteSpace(BaseUrl))
         {
-            MessageBox.Show("请输入 Base URL", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            WpfMessageBox.Show("请输入 Base URL", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ApiKey))
         {
-            MessageBox.Show("请输入 API Key", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            WpfMessageBox.Show("请输入 API Key", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ModelName))
         {
-            MessageBox.Show("请输入模型名称", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            WpfMessageBox.Show("请输入模型名称", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
@@ -234,11 +235,11 @@ public class MainViewModel : INotifyPropertyChanged
 
             if (result.IsSuccess)
             {
-                MessageBox.Show("连接成功！", "测试结果", MessageBoxButton.OK, MessageBoxImage.Information);
+                WpfMessageBox.Show("连接成功！", "测试结果", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
-                MessageBox.Show($"连接失败: {result.ErrorMessage}", "测试结果", MessageBoxButton.OK, MessageBoxImage.Error);
+                WpfMessageBox.Show($"连接失败: {result.ErrorMessage}", "测试结果", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         finally
@@ -251,13 +252,13 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (string.IsNullOrWhiteSpace(BaseUrl))
         {
-            MessageBox.Show("Base URL 不能为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            WpfMessageBox.Show("Base URL 不能为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ModelName))
         {
-            MessageBox.Show("模型名称不能为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            WpfMessageBox.Show("模型名称不能为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
@@ -280,11 +281,11 @@ public class MainViewModel : INotifyPropertyChanged
 
             _configManager.SaveConfig(config);
 
-            MessageBox.Show("配置已保存", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            WpfMessageBox.Show("配置已保存", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"保存配置失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            WpfMessageBox.Show($"保存配置失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {
@@ -312,12 +313,12 @@ public class MainViewModel : INotifyPropertyChanged
             }
             else
             {
-                MessageBox.Show("日志文件不存在", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                WpfMessageBox.Show("日志文件不存在", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"打开日志文件失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            WpfMessageBox.Show($"打开日志文件失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -331,11 +332,11 @@ public class MainViewModel : INotifyPropertyChanged
                 LogPath = LogPath
             });
             logger.Clear();
-            MessageBox.Show("日志已清除", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            WpfMessageBox.Show("日志已清除", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"清除日志失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            WpfMessageBox.Show($"清除日志失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -368,11 +369,11 @@ public class MainViewModel : INotifyPropertyChanged
             _registryManager.RegisterContextMenu(exePath);
 
             RefreshRegistrationStatus();
-            MessageBox.Show("已成功添加到右键菜单！\n提示: 按住 Ctrl 选中两个文件即可使用", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            WpfMessageBox.Show("已成功添加到右键菜单！\n提示: 按住 Ctrl 选中两个文件即可使用", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"注册失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            WpfMessageBox.Show($"注册失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -383,11 +384,11 @@ public class MainViewModel : INotifyPropertyChanged
             _registryManager.UnregisterContextMenu();
 
             RefreshRegistrationStatus();
-            MessageBox.Show("已从右键菜单移除", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            WpfMessageBox.Show("已从右键菜单移除", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"移除失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            WpfMessageBox.Show($"移除失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
