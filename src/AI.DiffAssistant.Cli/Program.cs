@@ -126,7 +126,7 @@ public class Program
     {
         try
         {
-            var guiPath = Path.Combine(AppContext.BaseDirectory, "AI.DiffAssistant.GUI.exe");
+            var guiPath = Path.Combine(AppContext.BaseDirectory, "diff-check.exe");
 
             if (File.Exists(guiPath))
             {
@@ -142,7 +142,7 @@ public class Program
                     AppContext.BaseDirectory,
                     "..", "..", "..", "..",
                     "AI.DiffAssistant.GUI", "bin", "Release", "net10.0-windows",
-                    "AI.DiffAssistant.GUI.exe");
+                    "diff-check.exe");
 
                 if (File.Exists(altGuiPath))
                 {

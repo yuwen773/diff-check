@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AI.DiffAssistant.GUI"
         xmlns:conv="clr-namespace:AI.DiffAssistant.GUI.Converters"
         mc:Ignorable="d"
-        Title="AI 文档差异助手 - 配置中心"
+        Title="diff-check - 配置中心"
         Height="600" Width="680"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -33,7 +32,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
-                           Text="AI 文档差异助手 - 配置中心"
+                           Text="diff-check - 配置中心"
                            FontSize="15"
                            FontWeight="Bold"
                            Foreground="{DynamicResource TextPrimaryBrush}"/>
@@ -94,8 +93,7 @@
                                          Padding="8,4"
                                          Height="32"
                                          ToolTip="API 密钥"
-                                         PasswordChanged="PasswordBox_PasswordChanged"
-                                         local:PasswordHelper.Password="{Binding ApiKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                         PasswordChanged="PasswordBox_PasswordChanged"/>
                             <Button Grid.Column="2"
                                     Content="👁"
                                     Width="40"
@@ -203,7 +201,7 @@
 
                         <!-- 提示信息 -->
                         <TextBlock Grid.Row="4"
-                                   Text="提示: 按住 Ctrl 选中两个文件，右键选择「AI 差异分析」即可使用"
+                                   Text="提示: 按住 Ctrl 选中两个文件，右键选择「diff-check」即可使用"
                                    FontSize="12"
                                    Foreground="{DynamicResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center"

@@ -17,6 +17,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         _viewModel = new MainViewModel();
         DataContext = _viewModel;
+        PasswordBox.Password = _viewModel.ApiKey;
     }
 
     /// <summary>
@@ -26,8 +27,7 @@ public partial class MainWindow : Window
     {
         if (sender is PasswordBox passwordBox)
         {
-            // 使用附加行为同步密码到 ViewModel
-            PasswordHelper.SetPassword(passwordBox, passwordBox.Password);
+            _viewModel.ApiKey = passwordBox.Password;
         }
     }
 

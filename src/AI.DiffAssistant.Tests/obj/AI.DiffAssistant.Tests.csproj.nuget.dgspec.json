@@ -13,6 +13,8 @@
         "packagesPath": "C:\\Users\\钰玟\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Cli\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
+        "CentralPackageTransitivePinningEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -59,8 +61,21 @@
           "dependencies": {
             "Microsoft.Toolkit.Uwp.Notifications": {
               "target": "Package",
-              "version": "[7.1.3, )"
+              "version": "[7.1.3, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "coverlet.collector": "6.0.4",
+            "DocumentFormat.OpenXml": "3.0.2",
+            "Microsoft.NET.Test.Sdk": "17.14.1",
+            "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
+            "PdfPig": "0.1.8",
+            "System.Drawing.Common": "8.0.1",
+            "System.IO.Packaging": "8.0.1",
+            "WireMock.Net": "1.21.0",
+            "xunit": "2.9.3",
+            "xunit.runner.visualstudio": "3.1.5"
           },
           "imports": [
             "net461",
@@ -379,6 +394,8 @@
         "packagesPath": "C:\\Users\\钰玟\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Core\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
+        "CentralPackageTransitivePinningEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -422,16 +439,31 @@
           "dependencies": {
             "DocumentFormat.OpenXml": {
               "target": "Package",
-              "version": "[3.0.2, )"
+              "version": "[3.0.2, )",
+              "versionCentrallyManaged": true
             },
             "Microsoft.Toolkit.Uwp.Notifications": {
               "target": "Package",
-              "version": "[7.1.3, )"
+              "version": "[7.1.3, )",
+              "versionCentrallyManaged": true
             },
             "PdfPig": {
               "target": "Package",
-              "version": "[0.1.8, )"
+              "version": "[0.1.8, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "coverlet.collector": "6.0.4",
+            "DocumentFormat.OpenXml": "3.0.2",
+            "Microsoft.NET.Test.Sdk": "17.14.1",
+            "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
+            "PdfPig": "0.1.8",
+            "System.Drawing.Common": "8.0.1",
+            "System.IO.Packaging": "8.0.1",
+            "WireMock.Net": "1.21.0",
+            "xunit": "2.9.3",
+            "xunit.runner.visualstudio": "3.1.5"
           },
           "imports": [
             "net461",
@@ -750,6 +782,8 @@
         "packagesPath": "C:\\Users\\钰玟\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.GUI\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
+        "CentralPackageTransitivePinningEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -796,8 +830,21 @@
           "dependencies": {
             "Microsoft.Toolkit.Uwp.Notifications": {
               "target": "Package",
-              "version": "[7.1.3, )"
+              "version": "[7.1.3, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "coverlet.collector": "6.0.4",
+            "DocumentFormat.OpenXml": "3.0.2",
+            "Microsoft.NET.Test.Sdk": "17.14.1",
+            "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
+            "PdfPig": "0.1.8",
+            "System.Drawing.Common": "8.0.1",
+            "System.IO.Packaging": "8.0.1",
+            "WireMock.Net": "1.21.0",
+            "xunit": "2.9.3",
+            "xunit.runner.visualstudio": "3.1.5"
           },
           "imports": [
             "net461",
@@ -1135,6 +1182,8 @@
         "packagesPath": "C:\\Users\\钰玟\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
+        "CentralPackageTransitivePinningEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -1171,6 +1220,18 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
+          "centralPackageVersions": {
+            "coverlet.collector": "6.0.4",
+            "DocumentFormat.OpenXml": "3.0.2",
+            "Microsoft.NET.Test.Sdk": "17.14.1",
+            "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
+            "PdfPig": "0.1.8",
+            "System.Drawing.Common": "8.0.1",
+            "System.IO.Packaging": "8.0.1",
+            "WireMock.Net": "1.21.0",
+            "xunit": "2.9.3",
+            "xunit.runner.visualstudio": "3.1.5"
+          },
           "imports": [
             "net461",
             "net462",
@@ -1479,6 +1540,8 @@
         "packagesPath": "C:\\Users\\钰玟\\.nuget\\packages\\",
         "outputPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Tests\\obj\\",
         "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
+        "CentralPackageTransitivePinningEnabled": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
@@ -1531,26 +1594,43 @@
           "dependencies": {
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.14.1, )"
+              "version": "[17.14.1, )",
+              "versionCentrallyManaged": true
             },
             "WireMock.Net": {
               "target": "Package",
-              "version": "[1.21.0, )"
+              "version": "[1.21.0, )",
+              "versionCentrallyManaged": true
             },
             "coverlet.collector": {
               "target": "Package",
-              "version": "[6.0.4, )"
+              "version": "[6.0.4, )",
+              "versionCentrallyManaged": true
             },
             "xunit": {
               "target": "Package",
-              "version": "[2.9.3, )"
+              "version": "[2.9.3, )",
+              "versionCentrallyManaged": true
             },
             "xunit.runner.visualstudio": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.5, )"
+              "version": "[3.1.5, )",
+              "versionCentrallyManaged": true
             }
+          },
+          "centralPackageVersions": {
+            "coverlet.collector": "6.0.4",
+            "DocumentFormat.OpenXml": "3.0.2",
+            "Microsoft.NET.Test.Sdk": "17.14.1",
+            "Microsoft.Toolkit.Uwp.Notifications": "7.1.3",
+            "PdfPig": "0.1.8",
+            "System.Drawing.Common": "8.0.1",
+            "System.IO.Packaging": "8.0.1",
+            "WireMock.Net": "1.21.0",
+            "xunit": "2.9.3",
+            "xunit.runner.visualstudio": "3.1.5"
           },
           "imports": [
             "net461",

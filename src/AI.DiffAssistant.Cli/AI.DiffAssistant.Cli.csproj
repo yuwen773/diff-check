@@ -11,15 +11,39 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <SubApplication>true</SubApplication>
+    <ApplicationIcon>Assets\diff-check.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <Target Name="CopyDiffCheckCliExe" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe"
+          DestinationFiles="$(TargetDir)diff-check-cli.exe"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyDiffCheckCliExePublish" AfterTargets="Publish">
+    <Copy SourceFiles="$(PublishDir)$(AssemblyName).exe"
+          DestinationFiles="$(PublishDir)diff-check-cli.exe"
+          SkipUnchangedFiles="true" />
+  </Target>
 
   <ItemGroup>
     <Manifest Include="app.manifest" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Assets\diff-check.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>diff-check.ico</TargetPath>
+    </Content>
+    <Content Include="Assets\diff-check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>diff-check.png</TargetPath>
+    </Content>
+  </ItemGroup>
+
   <!-- 确保通知库的 DLL 被复制到输出目录 -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" />
   </ItemGroup>
 
 </Project>

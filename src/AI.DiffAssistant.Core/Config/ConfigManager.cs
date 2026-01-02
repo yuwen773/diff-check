@@ -31,7 +31,34 @@ public class ConfigManager
     {
         var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         var configDir = System.IO.Path.Combine(appDataPath, ConfigConstants.AppName);
-        return System.IO.Path.Combine(configDir, ConfigConstants.ConfigFileName);
+        var configPath = System.IO.Path.Combine(configDir, ConfigConstants.ConfigFileName);
+
+        var legacyPath = GetLegacyConfigPath(appDataPath);
+        if (!System.IO.File.Exists(configPath) && System.IO.File.Exists(legacyPath))
+        {
+            if (!System.IO.Directory.Exists(configDir))
+            {
+                System.IO.Directory.CreateDirectory(configDir);
+            }
+
+            System.IO.File.Copy(legacyPath, configPath, true);
+            try
+            {
+                System.IO.File.Delete(legacyPath);
+            }
+            catch
+            {
+                // 忽略清理旧配置失败
+            }
+        }
+
+        return configPath;
+    }
+
+    private static string GetLegacyConfigPath(string appDataPath)
+    {
+        var legacyDir = System.IO.Path.Combine(appDataPath, ConfigConstants.LegacyAppName);
+        return System.IO.Path.Combine(legacyDir, ConfigConstants.ConfigFileName);
     }
 
     /// <summary>
@@ -55,7 +82,7 @@ public class ConfigManager
             if (!System.IO.File.Exists(_configPath))
             {
                 _config = CreateDefaultConfig();
-                SaveConfig(_config);
+                SaveConfigInternal(_config);
                 return _config;
             }
 
@@ -72,7 +99,12 @@ public class ConfigManager
                 _config = CreateDefaultConfig();
             }
 
-            return _config;
+            if (_config != null && NormalizeConfig(_config))
+            {
+                SaveConfigInternal(_config);
+            }
+
+            return _config!;
         }
     }
 
@@ -83,24 +115,7 @@ public class ConfigManager
     {
         lock (_lock)
         {
-            // 确保目录存在
-            var directory = System.IO.Path.GetDirectoryName(_configPath);
-            if (!string.IsNullOrEmpty(directory) && !System.IO.Directory.Exists(directory))
-            {
-                System.IO.Directory.CreateDirectory(directory);
-            }
-
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true
-            };
-            var json = JsonSerializer.Serialize(config, options);
-            System.IO.File.WriteAllText(_configPath, json);
-
-            _config = config;
-
-            // 重新启动文件监听
-            StartWatching();
+            SaveConfigInternal(config);
         }
     }
 
@@ -152,6 +167,41 @@ public class ConfigManager
                 }
             }
         });
+    }
+
+    private void SaveConfigInternal(AppConfig config)
+    {
+        // 确保目录存在
+        var directory = System.IO.Path.GetDirectoryName(_configPath);
+        if (!string.IsNullOrEmpty(directory) && !System.IO.Directory.Exists(directory))
+        {
+            System.IO.Directory.CreateDirectory(directory);
+        }
+
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true
+        };
+        var json = JsonSerializer.Serialize(config, options);
+        System.IO.File.WriteAllText(_configPath, json);
+
+        _config = config;
+
+        // 重新启动文件监听
+        StartWatching();
+    }
+
+    private static bool NormalizeConfig(AppConfig config)
+    {
+        var updated = false;
+
+        if (string.Equals(config.Logging.LogPath, "%TEMP%\\AI.DiffAssistant.log", StringComparison.OrdinalIgnoreCase))
+        {
+            config.Logging.LogPath = "%TEMP%\\diff-check.log";
+            updated = true;
+        }
+
+        return updated;
     }
 
     private static AppConfig CreateDefaultConfig()

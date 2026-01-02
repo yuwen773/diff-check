@@ -1,6 +1,6 @@
 # 系统架构文档
 
-> AI Document Difference Assistant 架构设计说明
+> diff-check 架构设计说明（内部项目名仍为 AI.DiffAssistant.*）
 
 ---
 
@@ -82,6 +82,7 @@ src/
 | `ViewModels/` | MVVM ViewModels |
 | `Converters/` | 值转换器 |
 | `Themes/` | 主题资源文件（深色/浅色） |
+| `Assets/` | 品牌资源（应用图标、通知图标） |
 | `App.xaml` | WPF 应用入口资源字典 |
 | `MainWindow.xaml` | 配置中心主窗口 |
 
@@ -101,6 +102,12 @@ src/
 | `Themes/LightTheme.xaml` | 浅色主题资源字典（背景 #FFFFFF） |
 | `App.xaml.cs` | 主题管理器（IsDarkTheme、ToggleTheme、ApplyTheme） |
 
+**品牌资源**:
+| 文件 | 作用 |
+|------|------|
+| `Assets/diff-check.ico` | 应用图标（可执行文件/右键菜单） |
+| `Assets/diff-check.png` | Toast 通知图标 |
+
 **设计模式**: MVVM（Model-View-ViewModel）
 
 **依赖**: Core、Shared
@@ -118,6 +125,8 @@ src/
 | `ArgsParser.cs` | 命令行参数解析，返回 ParseResult |
 | `app.manifest` | Windows 应用程序清单，声明信任级别，启用 Toast 通知 |
 | `AI.DiffAssistant.Cli.csproj` | 项目配置，定义为 WinExe 移除控制台窗口 |
+| `Assets/diff-check.ico` | 右键菜单与应用图标资源 |
+| `Assets/diff-check.png` | Toast 通知图标资源 |
 
 **输出类型说明**:
 - `WinExe`: 以 Windows 应用程序运行（无控制台窗口）
@@ -246,7 +255,7 @@ File Explorer (2 files) → Cli/Program.cs
 
 ## 5. 配置存储
 
-**路径**: `%APPDATA%\AI.DiffAssistant\config.json`
+**路径**: `%APPDATA%\diff-check\config.json`
 
 **格式**:
 ```json
@@ -337,7 +346,7 @@ public interface IFileParser
 
 | 文件 | 作用 |
 |------|------|
-| `RegistryManager.cs` | 右键菜单注册/注销；创建 `HKCU\Software\Classes\*\shell\AI差异分析` 键 |
+| `RegistryManager.cs` | 右键菜单注册/注销；创建 `HKCU\Software\Classes\*\shell\diff-check` 键 |
 
 ### 7.6 Notification/ 通知模块
 
@@ -347,6 +356,7 @@ public interface IFileParser
 
 **NotificationManager V1.1 增强**:
 - 使用 `ToastContentBuilder` 构建原生 Windows Toast 通知
+- AppId 更新为 `diff-check`
 - `ShowSuccess(message, filePathToOpen)`: 成功通知带操作按钮
   - 标题: "分析完成"
   - 按钮: [打开文件]、[打开文件夹]
@@ -361,6 +371,10 @@ public interface IFileParser
 - TargetFramework: `net10.0-windows10.0.17763.0`
 - Windows 10 Build 17763（Version 1809）或更高版本
 - 依赖 `Microsoft.Toolkit.Uwp.Notifications` 7.1.3 |
+
+**发布产物命名**:
+- GUI 可执行文件：`diff-check.exe`
+- CLI 可执行文件：`diff-check-cli.exe`
 
 ### 7.7 Util/ 工具类模块
 

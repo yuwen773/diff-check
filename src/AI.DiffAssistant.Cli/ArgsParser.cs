@@ -330,18 +330,18 @@ public static class ArgsParser
     /// </summary>
     public static string GetUsage()
     {
-        return @"AI 文档差异助手 - 命令行模式
+        return @"diff-check - 命令行模式
 
 用法:
-  AI.DiffAssistant.Cli.exe              - 启动 GUI 配置中心
-  AI.DiffAssistant.Cli.exe fileA fileB - 对比两个文件并生成分析报告
+  diff-check-cli.exe              - 启动 GUI 配置中心
+  diff-check-cli.exe fileA fileB - 对比两个文件并生成分析报告
 
 参数:
   fileA - 第一个文件路径
   fileB - 第二个文件路径
 
 示例:
-  AI.DiffAssistant.Cli.exe ""C:\docs\version1.txt"" ""C:\docs\version2.txt""
+  diff-check-cli.exe ""C:\docs\version1.txt"" ""C:\docs\version2.txt""
 ";
     }
 }

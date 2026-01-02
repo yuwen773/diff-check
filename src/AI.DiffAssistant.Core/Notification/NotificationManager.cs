@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using Microsoft.Toolkit.Uwp.Notifications;
 
@@ -11,7 +10,7 @@ namespace AI.DiffAssistant.Core.Notification;
 /// </summary>
 public static class NotificationManager
 {
-    private const string AppId = "AI.DiffAssistant";
+    private const string AppId = "diff-check";
 
     /// <summary>
     /// 初始化通知管理器
@@ -48,31 +47,10 @@ public static class NotificationManager
     {
         try
         {
-            // 注册 Toast 激活回调（如果提供了文件路径）
-            if (filePathToOpen != null)
-            {
-                ToastNotificationManagerCompat.OnActivated += args =>
-                {
-                    if (args.Argument == "action=openFile" || args.Argument == "action=openResult")
-                    {
-                        try
-                        {
-                            Process.Start(new ProcessStartInfo(filePathToOpen)
-                            {
-                                UseShellExecute = true
-                            });
-                        }
-                        catch (Exception)
-                        {
-                            // 静默处理
-                        }
-                    }
-                };
-            }
-
             var builder = new ToastContentBuilder()
-                .AddArgument("action", "openResult")
                 .AddText(title);
+
+            AddAppLogoIfAvailable(builder);
 
             if (isError)
             {
@@ -82,13 +60,26 @@ public static class NotificationManager
             else
             {
                 // 成功通知：显示结果信息和操作按钮
-                builder.AddText(content)
-                    .AddButton(new ToastButton()
+                builder.AddText(content);
+
+                if (!string.IsNullOrWhiteSpace(filePathToOpen))
+                {
+                    var fileUri = new Uri($"file:///{filePathToOpen.Replace("\\", "/")}");
+                    builder.SetProtocolActivation(fileUri);
+
+                    builder.AddButton(new ToastButton()
                         .SetContent("打开文件")
-                        .AddArgument("action", "openFile"))
-                    .AddButton(new ToastButton()
-                        .SetContent("打开文件夹")
-                        .AddArgument("action", "openFolder"));
+                        .SetProtocolActivation(fileUri));
+
+                    var folderPath = Path.GetDirectoryName(filePathToOpen);
+                    if (!string.IsNullOrWhiteSpace(folderPath))
+                    {
+                        var folderUri = new Uri($"file:///{folderPath.Replace("\\", "/")}");
+                        builder.AddButton(new ToastButton()
+                            .SetContent("打开文件夹")
+                            .SetProtocolActivation(folderUri));
+                    }
+                }
             }
 
             builder.Show();
@@ -97,6 +88,15 @@ public static class NotificationManager
         {
             // Toast 通知失败时静默处理，使用控制台输出
             Console.WriteLine($"[{title}] {content}");
+        }
+    }
+
+    private static void AddAppLogoIfAvailable(ToastContentBuilder builder)
+    {
+        var logoPath = Path.Combine(AppContext.BaseDirectory, "diff-check.png");
+        if (System.IO.File.Exists(logoPath))
+        {
+            builder.AddAppLogoOverride(new Uri(logoPath), ToastGenericAppLogoCrop.Default);
         }
     }
 

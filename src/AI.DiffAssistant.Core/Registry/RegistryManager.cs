@@ -10,7 +10,12 @@ public class RegistryManager
     /// <summary>
     /// 注册表主键路径
     /// </summary>
-    public const string RegRoot = @"Software\Classes\*\shell\AI差异分析";
+    public const string RegRoot = @"Software\Classes\*\shell\diff-check";
+
+    /// <summary>
+    /// 旧版注册表主键路径（用于迁移/清理）
+    /// </summary>
+    private const string LegacyRegRoot = @"Software\Classes\*\shell\AI差异分析";
 
     /// <summary>
     /// 命令子键路径
@@ -47,7 +52,12 @@ public class RegistryManager
     /// <summary>
     /// 图标文件名
     /// </summary>
-    private const string IconFileName = "app.ico";
+    private const string IconFileName = "diff-check.ico";
+
+    /// <summary>
+    /// 右键菜单显示名称
+    /// </summary>
+    private const string DisplayName = "diff-check";
 
     /// <summary>
     /// 注册右键菜单
@@ -65,11 +75,13 @@ public class RegistryManager
             if (!System.IO.File.Exists(exePath))
                 throw new FileNotFoundException("可执行文件不存在", exePath);
 
+            CleanupLegacyRegistration();
+
             // 创建主键
             using var mainKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(_registryPath);
 
             // 设置显示名称
-            mainKey.SetValue("", "AI 差异分析");
+            mainKey.SetValue("", DisplayName);
 
             // 设置图标
             var iconPath = SetIcon(exePath, mainKey);
@@ -127,6 +139,7 @@ public class RegistryManager
         {
             // 删除主键（包含所有子键）
             Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree(_registryPath, false);
+            CleanupLegacyRegistration();
             return true;
         }
         catch (ArgumentException)
@@ -168,6 +181,22 @@ public class RegistryManager
         catch (Exception)
         {
             return null;
+        }
+    }
+
+    private static void CleanupLegacyRegistration()
+    {
+        try
+        {
+            Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree(LegacyRegRoot, false);
+        }
+        catch (ArgumentException)
+        {
+            // 旧键不存在，忽略
+        }
+        catch
+        {
+            // 忽略清理失败
         }
     }
 }

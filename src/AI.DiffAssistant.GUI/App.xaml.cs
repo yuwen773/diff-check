@@ -9,7 +9,7 @@ namespace AI.DiffAssistant.GUI;
 /// </summary>
 public partial class App : Application
 {
-    private static bool _isDarkTheme = true;
+    private static bool _isDarkTheme = false;
 
     public static bool IsDarkTheme
     {

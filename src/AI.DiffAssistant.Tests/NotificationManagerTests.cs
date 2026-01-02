@@ -11,10 +11,10 @@ public class NotificationManagerTests
     public void NotificationManager_ShouldHaveAppId()
     {
         // Arrange & Act
-        var appId = "AI.DiffAssistant";
+        var appId = "diff-check";
 
         // Assert
-        Assert.Equal("AI.DiffAssistant", appId);
+        Assert.Equal("diff-check", appId);
     }
 
     [Fact]

@@ -7,14 +7,19 @@
 
   <ItemGroup>
     <!-- 图标文件复制到输出目录 -->
-    <Content Include="Assets\app.ico">
+    <Content Include="Assets\diff-check.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>diff-check.ico</TargetPath>
+    </Content>
+    <Content Include="Assets\diff-check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>diff-check.png</TargetPath>
     </Content>
   </ItemGroup>
 
   <!-- 确保通知库的 DLL 被复制到输出目录 -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" />
     <Manifest Include="app.manifest" />
   </ItemGroup>
 
@@ -24,6 +29,19 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\diff-check.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <Target Name="CopyDiffCheckExe" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe"
+          DestinationFiles="$(TargetDir)diff-check.exe"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyDiffCheckExePublish" AfterTargets="Publish">
+    <Copy SourceFiles="$(PublishDir)$(AssemblyName).exe"
+          DestinationFiles="$(PublishDir)diff-check.exe"
+          SkipUnchangedFiles="true" />
+  </Target>
 
 </Project>

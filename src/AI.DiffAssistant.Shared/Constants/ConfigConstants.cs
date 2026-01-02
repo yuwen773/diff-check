@@ -8,7 +8,12 @@ public static class ConfigConstants
     /// <summary>
     /// 应用程序名称
     /// </summary>
-    public const string AppName = "AI.DiffAssistant";
+    public const string AppName = "diff-check";
+
+    /// <summary>
+    /// 旧版应用程序名称（用于迁移配置）
+    /// </summary>
+    public const string LegacyAppName = "AI.DiffAssistant";
 
     /// <summary>
     /// 配置文件名

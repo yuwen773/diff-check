@@ -13,7 +13,7 @@ public class LoggingConfig
     /// <summary>
     /// 日志文件路径（支持环境变量如 %TEMP%）
     /// </summary>
-    public string LogPath { get; set; } = "%TEMP%\\AI.DiffAssistant.log";
+    public string LogPath { get; set; } = "%TEMP%\\diff-check.log";
 
     /// <summary>
     /// 日志级别（逗号分隔：Error, Warning）

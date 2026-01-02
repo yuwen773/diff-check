@@ -154,7 +154,7 @@ public class ArgsParserTests : IDisposable
 
         // Assert
         Assert.False(string.IsNullOrWhiteSpace(usage));
-        Assert.Contains("AI 文档差异助手", usage);
+        Assert.Contains("diff-check", usage);
         Assert.Contains("用法", usage);
         Assert.Contains("fileA", usage);
         Assert.Contains("fileB", usage);

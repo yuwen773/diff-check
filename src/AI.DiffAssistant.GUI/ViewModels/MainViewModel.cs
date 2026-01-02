@@ -345,7 +345,7 @@ public class MainViewModel : INotifyPropertyChanged
         {
             Title = "选择日志文件位置",
             Filter = "日志文件 (*.log)|*.log|所有文件 (*.*)|*.*",
-            FileName = string.IsNullOrEmpty(LogPath) ? "AI.DiffAssistant.log" : Path.GetFileName(LogPath),
+            FileName = string.IsNullOrEmpty(LogPath) ? "diff-check.log" : Path.GetFileName(LogPath),
             InitialDirectory = string.IsNullOrEmpty(LogPath)
                 ? Path.GetTempPath()
                 : Path.GetDirectoryName(LogPath)
@@ -404,7 +404,7 @@ public class MainViewModel : INotifyPropertyChanged
     {
         var currentPath = GetExecutablePath();
         var directory = Path.GetDirectoryName(currentPath);
-        var cliPath = Path.Combine(directory ?? "", "AI.DiffAssistant.Cli.exe");
+        var cliPath = Path.Combine(directory ?? "", "diff-check-cli.exe");
 
         // 如果 CLI 不存在（开发环境），使用当前路径
         if (!System.IO.File.Exists(cliPath))
