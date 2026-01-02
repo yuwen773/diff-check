@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using AI.DiffAssistant.Core.Config;
 using AI.DiffAssistant.Core.Diff;
+using AI.DiffAssistant.Core.Release;
 using AI.DiffAssistant.Core.Logging;
 using AI.DiffAssistant.Core.Registry;
 using AI.DiffAssistant.Shared.Models;
@@ -22,7 +24,9 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly ConfigManager _configManager;
     private readonly AiService _aiService;
     private readonly RegistryManager _registryManager;
-    private readonly HttpClient _httpClient;
+    private readonly ReleaseService _releaseService;
+    private readonly HttpClient _aiHttpClient;
+    private readonly HttpClient _releaseHttpClient;
 
     // 绑定属性
     private string _baseUrl = string.Empty;
@@ -32,6 +36,10 @@ public class MainViewModel : INotifyPropertyChanged
     private bool _isRegistered;
     private bool _isTesting;
     private bool _isSaving;
+    private bool _isReleaseLoading;
+    private string _releaseLoadError = string.Empty;
+
+    private ObservableCollection<ReleaseInfo> _releases = new();
 
     // 日志配置属性
     private bool _loggingEnabled = true;
@@ -43,10 +51,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     public MainViewModel()
     {
-        _httpClient = new HttpClient();
+        _aiHttpClient = new HttpClient();
+        _releaseHttpClient = new HttpClient();
         _configManager = new ConfigManager();
-        _aiService = new AiService(_httpClient);
+        _aiService = new AiService(_aiHttpClient);
         _registryManager = new RegistryManager();
+        _releaseService = new ReleaseService(_releaseHttpClient);
 
         // 初始化命令
         TestConnectionCommand = new RelayCommand(async _ => await TestConnectionAsync(), _ => IsNotTesting);
@@ -57,6 +67,8 @@ public class MainViewModel : INotifyPropertyChanged
         ClearLogFileCommand = new RelayCommand(_ => ClearLogFile());
         BrowseLogPathCommand = new RelayCommand(_ => BrowseLogPath());
         ToggleThemeCommand = new RelayCommand(_ => ToggleTheme());
+        RefreshReleaseCommand = new RelayCommand(async _ => await RefreshReleasesAsync(), _ => IsNotReleaseLoading);
+        DownloadReleaseCommand = new RelayCommand(DownloadRelease, param => param is ReleaseInfo);
 
         // 加载现有配置
         LoadConfig();
@@ -97,6 +109,7 @@ public class MainViewModel : INotifyPropertyChanged
 
     public bool IsNotTesting => !IsTesting;
     public bool IsNotSaving => !IsSaving;
+    public bool IsNotReleaseLoading => !IsReleaseLoading;
     public bool NotRegistered => !IsRegistered;
 
     public bool IsTesting
@@ -121,6 +134,30 @@ public class MainViewModel : INotifyPropertyChanged
                 OnPropertyChanged(nameof(IsNotSaving));
             }
         }
+    }
+
+    public bool IsReleaseLoading
+    {
+        get => _isReleaseLoading;
+        set
+        {
+            if (SetProperty(ref _isReleaseLoading, value))
+            {
+                OnPropertyChanged(nameof(IsNotReleaseLoading));
+            }
+        }
+    }
+
+    public string ReleaseLoadError
+    {
+        get => _releaseLoadError;
+        set => SetProperty(ref _releaseLoadError, value);
+    }
+
+    public ObservableCollection<ReleaseInfo> Releases
+    {
+        get => _releases;
+        set => SetProperty(ref _releases, value);
     }
 
     #endregion
@@ -168,6 +205,8 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand RegisterCommand { get; }
     public ICommand UnregisterCommand { get; }
     public ICommand ToggleThemeCommand { get; }
+    public ICommand RefreshReleaseCommand { get; }
+    public ICommand DownloadReleaseCommand { get; }
 
     #endregion
 
@@ -394,8 +433,90 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void RefreshRegistrationStatus()
     {
-        IsRegistered = _registryManager.IsRegistered();
+        if (!_registryManager.IsRegistered())
+        {
+            IsRegistered = false;
+            OnPropertyChanged(nameof(NotRegistered));
+            return;
+        }
+
+        var registeredPath = _registryManager.GetRegisteredPath();
+        if (string.IsNullOrWhiteSpace(registeredPath))
+        {
+            IsRegistered = false;
+            OnPropertyChanged(nameof(NotRegistered));
+            return;
+        }
+
+        if (IsCliExecutable(registeredPath))
+        {
+            IsRegistered = true;
+            OnPropertyChanged(nameof(NotRegistered));
+            return;
+        }
+
+        try
+        {
+            var cliPath = GetCliExecutablePath();
+            _registryManager.RegisterContextMenu(cliPath);
+            IsRegistered = true;
+        }
+        catch
+        {
+            IsRegistered = false;
+        }
+
         OnPropertyChanged(nameof(NotRegistered));
+    }
+
+    private async Task RefreshReleasesAsync()
+    {
+        IsReleaseLoading = true;
+        ReleaseLoadError = "加载中...";
+
+        try
+        {
+            var releases = await _releaseService.GetStableReleasesAsync("yuwen773", "diff-check");
+
+            Releases = new ObservableCollection<ReleaseInfo>(releases);
+            ReleaseLoadError = Releases.Count == 0 ? "暂无可用稳定版" : string.Empty;
+        }
+        catch (Exception ex)
+        {
+            ReleaseLoadError = $"加载版本列表失败: {ex.Message}";
+            Releases.Clear();
+        }
+        finally
+        {
+            IsReleaseLoading = false;
+        }
+    }
+
+    private void DownloadRelease(object? parameter)
+    {
+        if (parameter is not ReleaseInfo release)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(release.DownloadUrl))
+        {
+            WpfMessageBox.Show("下载地址为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = release.DownloadUrl,
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            WpfMessageBox.Show($"打开下载链接失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     /// <summary>
@@ -407,11 +528,26 @@ public class MainViewModel : INotifyPropertyChanged
         var directory = Path.GetDirectoryName(currentPath);
         var cliPath = Path.Combine(directory ?? "", "diff-check-cli.exe");
 
-        // 如果 CLI 不存在（开发环境），使用当前路径
-        if (!System.IO.File.Exists(cliPath))
-            return currentPath;
+        if (File.Exists(cliPath))
+        {
+            return cliPath;
+        }
 
-        return cliPath;
+        if (!string.IsNullOrWhiteSpace(directory))
+        {
+            var siblingCliPath = Path.GetFullPath(Path.Combine(directory, "..", "cli", "diff-check-cli.exe"));
+            if (File.Exists(siblingCliPath))
+            {
+                return siblingCliPath;
+            }
+        }
+
+        throw new FileNotFoundException("未找到 diff-check-cli.exe，请将其与 GUI 放在同一目录或 publish/cli 目录。");
+    }
+
+    private static bool IsCliExecutable(string path)
+    {
+        return path.EndsWith("diff-check-cli.exe", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string GetExecutablePath()

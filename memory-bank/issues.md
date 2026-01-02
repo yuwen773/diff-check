@@ -710,6 +710,102 @@ if (string.IsNullOrWhiteSpace(config.Api.BaseUrl) ||
 
 ---
 
+## 问题 #008: 版本下载刷新返回 401 Unauthorized
+
+### 问题描述
+
+在“版本下载”页点击“刷新”，提示：
+`加载版本列表失败: Response status code does not indicate success: 401 (Unauthorized)`
+
+### 问题根因
+
+**Release 请求复用了 AI HttpClient，携带了 OpenAI 的 Authorization 头**
+
+`MainViewModel` 中 `AiService` 与 `ReleaseService` 共用同一个 `HttpClient`。  
+`AiService` 会设置 `DefaultRequestHeaders.Authorization`（Bearer API Key），导致 GitHub Releases API 收到无效 Authorization，返回 401。
+
+### 影响范围
+
+- 版本下载列表无法加载
+- 用户无法获取稳定版下载信息
+
+### 修复方案
+
+1. 将 ReleaseService 改为独立的 `HttpClient` 实例，避免继承 AI 请求头。
+2. Release 请求始终设置 `User-Agent`，确保 GitHub API 正常响应。
+3. ReleaseService 构造时清除 `Authorization`，请求级别强制为空，避免残留头影响。
+
+### 状态
+
+- [x] 问题已确认
+- [x] 修复中
+- [x] 已完成
+
+### 修复文件
+
+- `src/AI.DiffAssistant.GUI/ViewModels/MainViewModel.cs`
+  - 拆分 `_aiHttpClient` 与 `_releaseHttpClient`
+- `src/AI.DiffAssistant.Core/Release/ReleaseService.cs`
+  - 请求中始终设置 `User-Agent`
+  - 清理 `Authorization` 头
+
+### 发现日期
+
+2026-01-02
+
+### 修复日期
+
+2026-01-02
+
+---
+
+## 问题 #009: 右键菜单执行 GUI 而非 CLI
+
+### 问题描述
+
+Ctrl 选中两个文件后右键“diff-check”，弹出的不是差异分析，而是配置中心 GUI。
+
+### 问题根因
+
+**注册表命令使用了 GUI 可执行文件**
+
+当 `diff-check-cli.exe` 不在 GUI 同目录（例如 GUI 发布在 `publish/gui`，CLI 发布在 `publish/cli`），  
+`GetCliExecutablePath()` 会回退为当前 GUI 路径，导致注册表命令指向 GUI。
+
+### 影响范围
+
+- 右键菜单无法执行静默分析
+- 每次右键都会弹出配置中心
+
+### 修复方案
+
+1. 查找 CLI 路径：优先同目录，其次 `..\cli\diff-check-cli.exe`。
+2. 若仍找不到 CLI，阻止注册并提示用户放置 CLI 到指定位置。
+3. 启动时检测注册路径是否为 CLI，若不是则自动重注册。
+
+### 状态
+
+- [x] 问题已确认
+- [x] 修复中
+- [x] 已完成
+
+### 修复文件
+
+- `src/AI.DiffAssistant.GUI/ViewModels/MainViewModel.cs`
+  - `GetCliExecutablePath()` 增加 `publish/cli` 搜索路径
+  - CLI 缺失时抛出错误提示，避免错误注册
+  - `RefreshRegistrationStatus()` 自动修复注册路径
+
+### 发现日期
+
+2026-01-02
+
+### 修复日期
+
+2026-01-02
+
+---
+
 ## 问题 #007: ToastContentBuilder.Show 方法找不到
 
 ### 问题描述

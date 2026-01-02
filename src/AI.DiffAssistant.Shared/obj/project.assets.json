@@ -15,11 +15,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj",
+      "projectUniqueName": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj",
       "projectName": "AI.DiffAssistant.Shared",
-      "projectPath": "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj",
+      "projectPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\AI.DiffAssistant.Shared.csproj",
       "packagesPath": "C:\\Users\\钰玟\\.nuget\\packages\\",
-      "outputPath": "d:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\obj\\",
+      "outputPath": "D:\\Work\\Backend\\JAVA\\Coding\\WorkSpace\\differenceDoc\\src\\AI.DiffAssistant.Shared\\obj\\",
       "projectStyle": "PackageReference",
       "centralPackageVersionsManagementEnabled": true,
       "CentralPackageTransitivePinningEnabled": true,

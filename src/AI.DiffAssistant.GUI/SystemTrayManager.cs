@@ -162,10 +162,13 @@ public class SystemTrayManager : IDisposable
     /// </summary>
     private void ShowMainWindow()
     {
-        _mainWindow.Show();
-        _mainWindow.WindowState = WindowState.Normal;
-        _mainWindow.Activate();
-        _mainWindow.Focus();
+        RunOnUiThread(() =>
+        {
+            _mainWindow.Show();
+            _mainWindow.WindowState = WindowState.Normal;
+            _mainWindow.Activate();
+            _mainWindow.Focus();
+        });
     }
 
     /// <summary>
@@ -173,7 +176,7 @@ public class SystemTrayManager : IDisposable
     /// </summary>
     private void HideMainWindow()
     {
-        _mainWindow.Hide();
+        RunOnUiThread(() => _mainWindow.Hide());
     }
 
     /// <summary>
@@ -181,14 +184,20 @@ public class SystemTrayManager : IDisposable
     /// </summary>
     private void ToggleMainWindow()
     {
-        if (_mainWindow.IsVisible)
+        RunOnUiThread(() =>
         {
-            HideMainWindow();
-        }
-        else
-        {
-            ShowMainWindow();
-        }
+            if (_mainWindow.IsVisible)
+            {
+                _mainWindow.Hide();
+            }
+            else
+            {
+                _mainWindow.Show();
+                _mainWindow.WindowState = WindowState.Normal;
+                _mainWindow.Activate();
+                _mainWindow.Focus();
+            }
+        });
     }
 
     /// <summary>
@@ -196,22 +205,35 @@ public class SystemTrayManager : IDisposable
     /// </summary>
     private void ShowAboutWindow()
     {
-        try
+        RunOnUiThread(() =>
         {
-            if (_aboutWindow == null || !_aboutWindow.IsVisible)
+            try
             {
-                _aboutWindow = new AboutWindow();
-                _aboutWindow.ShowDialog();
+                if (_aboutWindow == null || !_aboutWindow.IsVisible)
+                {
+                    _aboutWindow = new AboutWindow
+                    {
+                        Owner = _mainWindow.IsVisible ? _mainWindow : null,
+                        WindowStartupLocation = _mainWindow.IsVisible
+                            ? WindowStartupLocation.CenterOwner
+                            : WindowStartupLocation.CenterScreen
+                    };
+                    _aboutWindow.Closed += (_, _) => _aboutWindow = null;
+                    _aboutWindow.Show();
+                    _aboutWindow.Topmost = true;
+                    _aboutWindow.Activate();
+                    _aboutWindow.Topmost = false;
+                }
+                else
+                {
+                    _aboutWindow.Activate();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _aboutWindow.Activate();
+                System.Diagnostics.Debug.WriteLine($"显示关于窗口失败: {ex.Message}");
             }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"显示关于窗口失败: {ex.Message}");
-        }
+        });
     }
 
     /// <summary>
@@ -219,13 +241,37 @@ public class SystemTrayManager : IDisposable
     /// </summary>
     private void ExitApplication()
     {
-        try
+        RunOnUiThread(() =>
         {
-            _mainWindow.Close();
+            try
+            {
+                if (_notifyIcon != null)
+                {
+                    _notifyIcon.Visible = false;
+                }
+
+                _notifyIcon?.Dispose();
+                _contextMenu?.Dispose();
+                _aboutWindow?.Close();
+
+                System.Windows.Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"退出应用程序失败: {ex.Message}");
+            }
+        });
+    }
+
+    private void RunOnUiThread(Action action)
+    {
+        if (_mainWindow.Dispatcher.CheckAccess())
+        {
+            action();
         }
-        catch (Exception ex)
+        else
         {
-            System.Diagnostics.Debug.WriteLine($"退出应用程序失败: {ex.Message}");
+            _mainWindow.Dispatcher.Invoke(action);
         }
     }
 
@@ -236,6 +282,11 @@ public class SystemTrayManager : IDisposable
     {
         try
         {
+            if (_notifyIcon != null)
+            {
+                _notifyIcon.Visible = false;
+            }
+
             _notifyIcon?.Dispose();
             _contextMenu?.Dispose();
             _aboutWindow?.Close();

@@ -8,7 +8,7 @@
         ResizeMode="NoResize"
         WindowStyle="ToolWindow"
         ShowInTaskbar="False"
-        Icon="../Assets/diff-check.ico">
+        Icon="pack://siteoforigin:,,,/diff-check.ico">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -20,10 +20,9 @@
         <!-- 标题区域 -->
         <Border Grid.Row="0" Background="{DynamicResource PrimaryBrush}" Padding="20">
             <StackPanel Orientation="Horizontal">
-                <Image Source="../Assets/diff-check.ico" Width="48" Height="48"/>
+                <Image Source="pack://siteoforigin:,,,/diff-check.png" Width="48" Height="48"/>
                 <StackPanel Margin="15,0,0,0" VerticalAlignment="Center">
                     <TextBlock Text="diff-check" FontSize="24" FontWeight="Bold" Foreground="White"/>
-                    <TextBlock Text="AI 文档差异分析助手" FontSize="14" Foreground="White" Opacity="0.9"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -33,7 +32,7 @@
             <StackPanel>
                 <!-- 版本信息 -->
                 <StackPanel Margin="0,0,0,15">
-                    <TextBlock Text="版本信息" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
+                    <TextBlock Text="版本号" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
                     <TextBlock x:Name="VersionText" FontSize="14" TextWrapping="Wrap"/>
                 </StackPanel>
 
@@ -47,7 +46,7 @@
                 <StackPanel Margin="0,0,0,15">
                     <TextBlock Text="官网" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
                     <TextBlock FontSize="14">
-                        <Hyperlink NavigateUri="https://github.com/ai-diff-assistant">https://github.com/ai-diff-assistant</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/yuwen773/diff-check">https://github.com/yuwen773/diff-check</Hyperlink>
                     </TextBlock>
                 </StackPanel>
 
