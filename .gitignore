@@ -33,3 +33,37 @@ publish
 test/
 *.zip
 backup/
+
+
+# ======================
+# Build outputs
+# ======================
+bin/
+obj/
+
+# .NET build artifacts
+*.dll
+*.pdb
+*.exe
+
+# ======================
+# Visual Studio
+# ======================
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+
+# ======================
+# NuGet
+# ======================
+*.nupkg
+project.assets.json
+project.nuget.cache
+
+# ======================
+# OS
+# ======================
+Thumbs.db
+.DS_Store
