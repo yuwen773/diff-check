@@ -1,0 +1,48 @@
+<UserControl x:Class="AI.DiffAssistant.GUI.Controls.LoadingOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AI.DiffAssistant.GUI.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="600">
+    <UserControl.Style>
+        <Style TargetType="local:LoadingOverlay">
+            <Setter Property="Message" Value="加载中..."/>
+        </Style>
+    </UserControl.Style>
+
+    <Grid x:Name="OverlayGrid"
+          Background="#1E000000"
+          Visibility="Collapsed"
+          Opacity="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Loading 内容 -->
+        <Border Grid.Column="1" Grid.Row="1"
+                Background="{DynamicResource SurfaceBrush}"
+                CornerRadius="{DynamicResource CornerRadius8}"
+                Padding="32,24"
+                Effect="{DynamicResource CardShadow}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <local:LoadingIndicator x:Name="LoadingIndicator"
+                                         Size="{Binding Size, RelativeSource={RelativeSource AncestorType=local:LoadingOverlay}}"
+                                         IsLoading="True"
+                                         Margin="0,0,0,12"/>
+                <TextBlock Text="{Binding Message, RelativeSource={RelativeSource AncestorType=local:LoadingOverlay}}"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           FontSize="13"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,14 @@
+<Project>
+  <PropertyGroup>
+    <!-- 发布优化：移除调试符号 -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+
+    <!-- 启用依赖裁剪，移除未使用的代码 -->
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+
+    <!-- 优化发布输出 -->
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+</Project>

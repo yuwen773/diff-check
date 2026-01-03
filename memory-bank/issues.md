@@ -881,3 +881,226 @@ dotnet publish -c Release -r win-x64 --self-contained false -o publish
 ### 修复日期
 
 2025-12-30
+
+---
+
+## 问题 #010: 右击系统托盘菜单后窗口无法显示
+
+### 问题描述
+
+右击系统托盘图标后，点击"主面板"或"关于"选项：
+1. 任务栏通知区域显示程序图标
+2. 但主窗口没有弹出/显示
+3. 窗口似乎处于隐藏或不可见状态
+
+### 问题根因
+
+**窗口隐藏后恢复显示的多种问题**
+
+#### 问题分析 1：`Hide()` 后 `Show()` 失效
+
+在 `MainWindow.xaml.cs` 的 `OnClosing` 事件中：
+```csharp
+protected override void OnClosing(CancelEventArgs e)
+{
+    if (!_allowClose)
+    {
+        // ...
+        fadeOut.Completed += (s, args) =>
+        {
+            e.Cancel = true;
+            Hide();  // 使用 Hide() 隐藏窗口
+        };
+        // ...
+    }
+}
+```
+
+关键问题：
+1. `Hide()` 后窗口的 `IsVisible` 变为 `false`
+2. 后续调用 `Show()` 可能无法正确恢复窗口状态
+3. 窗口可能隐藏在屏幕外或状态异常
+
+#### 问题分析 2：窗口激活失败
+
+在 `SystemTrayManager.ShowMainWindow()` 中：
+```csharp
+_mainWindow.Show();
+_mainWindow.WindowState = WindowState.Normal;
+_mainWindow.Activate();
+_mainWindow.Focus();
+```
+
+关键问题：
+1. `Activate()` 可能因窗口状态问题而失败
+2. `Focus()` 可能无法获取输入焦点
+3. 窗口可能显示在其他窗口后面
+
+#### 问题分析 3：缺少强制置顶
+
+窗口可能被其他窗口遮挡，需要强制置顶显示。
+
+#### 问题分析 4：关闭动画遗留透明度/缩放状态
+
+`OnClosing` 中的淡出动画将 `Opacity` 设置为 0，并把 `WindowScale` 缩放到 0.95。  
+窗口被 `Hide()` 隐藏后，这些动画状态没有恢复。  
+托盘菜单只执行 `Show()`/`Activate()`，但窗口仍然透明，导致任务栏有图标却看不到窗口。
+
+### 影响范围
+
+- 托盘菜单的"主面板"功能失效
+- 托盘菜单的"关于"功能失效
+- 用户只能通过任务栏图标恢复窗口
+
+### 修复尝试
+
+#### 修复 1：添加 `SetWindowPos` API 强制置顶
+
+```csharp
+// 确保窗口在最前面
+var handle = new WindowInteropHelper(_mainWindow).Handle;
+SetWindowPos(handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+SetWindowPos(handle, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+```
+
+#### 修复 2：检查 `IsVisible` 状态
+
+```csharp
+if (!_mainWindow.IsVisible)
+{
+    _mainWindow.Show();
+}
+_mainWindow.WindowState = WindowState.Normal;
+```
+
+### 状态
+
+- [x] 问题已确认
+- [x] 修复中
+- [x] 已完成
+
+### 修复文件
+
+- `src/AI.DiffAssistant.GUI/MainWindow.xaml.cs`
+  - 增加 `RestoreFromTray()`，清除关闭动画并恢复 `Opacity/WindowScale`
+- `src/AI.DiffAssistant.GUI/SystemTrayManager.cs`
+  - **移除 `SynchronizationContext.Post`**：原代码使用异步 Post 导致菜单关闭后操作未执行
+  - **改用 `Dispatcher.Invoke`**：确保同步执行，菜单关闭前窗口已激活
+  - **添加 `ShowWindow` + `SW_RESTORE`**：可靠恢复窗口状态
+  - **添加 `SetForegroundWindow`**：强制将窗口带到前台并激活
+  - **在托盘菜单恢复窗口时调用 `RestoreFromTray()`**：避免窗口透明
+
+### 修复详情
+
+**核心问题**：关闭动画将窗口透明度置为 0 并保留，托盘恢复只调用 `Show()`/`Activate()`，导致窗口仍然透明不可见；同时异步 `Post` 也会引发时序问题。
+
+**修复方案**：
+```csharp
+// 修复前（异步）
+_syncContext.Post(_ => action(), null);
+
+// 修复后（同步）
+_mainWindow.Dispatcher.Invoke(action);
+```
+
+**窗口激活改进**：
+```csharp
+// 使用 Windows API 可靠激活
+ShowWindow(handle, SW_RESTORE);  // 先恢复窗口
+SetForegroundWindow(handle);      // 强制带到前台
+SetWindowPos(handle, HWND_TOP, ...); // 确保置顶
+_mainWindow.Activate();           // WPF 激活
+_mainWindow.Focus();              // WPF 焦点
+```
+
+**恢复关闭动画状态**：
+```csharp
+internal void RestoreFromTray()
+{
+    BeginAnimation(OpacityProperty, null);
+    WindowScale.BeginAnimation(ScaleTransform.ScaleXProperty, null);
+    WindowScale.BeginAnimation(ScaleTransform.ScaleYProperty, null);
+
+    Opacity = 1;
+    WindowScale.ScaleX = 1;
+    WindowScale.ScaleY = 1;
+}
+
+// 托盘菜单中恢复窗口
+_mainWindow.RestoreFromTray();
+```
+
+### 发现日期
+
+2026-01-03
+
+### 修复日期
+
+2026-01-03
+
+---
+
+## 问题 #011: 主题设置选项需要横向排列
+
+### 问题描述
+
+在"设置"Tab 的主题设置区域，三个主题选项：
+- 跟随系统
+- 明亮主题
+- 暗黑主题
+
+目前纵向排列，希望改为**横向排列**。
+
+### 问题根因
+
+当前 XAML 布局使用了 `StackPanel` 默认的垂直方向：
+
+```xaml
+<StackPanel Grid.Row="6" HorizontalAlignment="Center" Margin="0,0,0,16">
+    <RadioButton Content="跟随系统" .../>
+    <RadioButton Content="明亮主题" .../>
+    <RadioButton Content="暗黑主题" .../>
+</StackPanel>
+```
+
+`StackPanel` 默认 `Orientation="Vertical"`，导致 RadioButton 纵向排列。
+
+### 修复方案
+
+将 `StackPanel` 的 `Orientation` 改为 `Horizontal`：
+
+```xaml
+<StackPanel Grid.Row="6"
+            HorizontalAlignment="Center"
+            Margin="0,0,0,16"
+            Orientation="Horizontal">
+    <RadioButton Content="跟随系统" Margin="0,0,16,0"/>
+    <RadioButton Content="明亮主题" Margin="0,0,16,0"/>
+    <RadioButton Content="暗黑主题"/>
+</StackPanel>
+```
+
+### 影响范围
+
+- 主题设置区域的 UI 布局
+- 用户体验一致性
+
+### 状态
+
+- [x] 问题已确认
+- [x] 修复中
+- [x] 已完成
+
+### 修复文件
+
+- `src/AI.DiffAssistant.GUI/MainWindow.xaml`
+  - 修改"设置"Tab 中的主题设置区域，添加 `Orientation="Horizontal"`
+  - 修改 RadioButton 的 Margin 为水平间距
+
+### 发现日期
+
+2026-01-03
+
+### 修复日期
+
+2026-01-03

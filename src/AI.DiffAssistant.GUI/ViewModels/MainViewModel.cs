@@ -11,6 +11,7 @@ using AI.DiffAssistant.Core.Diff;
 using AI.DiffAssistant.Core.Release;
 using AI.DiffAssistant.Core.Logging;
 using AI.DiffAssistant.Core.Registry;
+using AI.DiffAssistant.GUI.Controls;
 using AI.DiffAssistant.Shared.Models;
 using WpfMessageBox = System.Windows.MessageBox;
 
@@ -27,6 +28,12 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly ReleaseService _releaseService;
     private readonly HttpClient _aiHttpClient;
     private readonly HttpClient _releaseHttpClient;
+
+    // Toast 服务
+    private ToastService? _toastService;
+
+    // 密码可见性切换事件（通知 View）
+    public event Action? TogglePasswordVisibilityRequested;
 
     // 绑定属性
     private string _baseUrl = string.Empty;
@@ -47,6 +54,9 @@ public class MainViewModel : INotifyPropertyChanged
     private bool _logErrorEnabled = true;
     private bool _logWarningEnabled = true;
 
+    // 主题模式属性
+    private string _themeMode = "System";
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public MainViewModel()
@@ -66,13 +76,35 @@ public class MainViewModel : INotifyPropertyChanged
         OpenLogFileCommand = new RelayCommand(_ => OpenLogFile());
         ClearLogFileCommand = new RelayCommand(_ => ClearLogFile());
         BrowseLogPathCommand = new RelayCommand(_ => BrowseLogPath());
-        ToggleThemeCommand = new RelayCommand(_ => ToggleTheme());
+        SetThemeCommand = new RelayCommand(param => SetTheme(param as string));
+        TogglePasswordVisibilityCommand = new RelayCommand(_ => TogglePasswordVisibility());
+        MinimizeCommand = new RelayCommand(_ => MinimizeWindow());
+        CloseCommand = new RelayCommand(_ => CloseWindow());
         RefreshReleaseCommand = new RelayCommand(async _ => await RefreshReleasesAsync(), _ => IsNotReleaseLoading);
         DownloadReleaseCommand = new RelayCommand(DownloadRelease, param => param is ReleaseInfo);
+        OpenDocumentationCommand = new RelayCommand(_ => OpenDocumentation());
 
         // 加载现有配置
         LoadConfig();
         RefreshRegistrationStatus();
+    }
+
+    /// <summary>
+    /// 设置 Toast 服务
+    /// </summary>
+    public void SetToastService(ToastService service)
+    {
+        _toastService = service;
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        TogglePasswordVisibilityRequested?.Invoke();
+    }
+
+    private void MinimizeWindow()
+    {
+        global::System.Windows.Application.Current.MainWindow?.WindowState = WindowState.Minimized;
     }
 
     #region 绑定属性
@@ -204,17 +236,72 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand SaveConfigCommand { get; }
     public ICommand RegisterCommand { get; }
     public ICommand UnregisterCommand { get; }
-    public ICommand ToggleThemeCommand { get; }
+    public ICommand SetThemeCommand { get; }
+    public ICommand TogglePasswordVisibilityCommand { get; }
+    public ICommand MinimizeCommand { get; }
+    public ICommand CloseCommand { get; }
     public ICommand RefreshReleaseCommand { get; }
     public ICommand DownloadReleaseCommand { get; }
+    public ICommand OpenDocumentationCommand { get; }
+
+    #endregion
+
+    #region 主题模式属性
+
+    public string ThemeMode
+    {
+        get => _themeMode;
+        set
+        {
+            if (SetProperty(ref _themeMode, value))
+            {
+                ApplyTheme();
+            }
+        }
+    }
 
     #endregion
 
     #region 业务逻辑
 
-    private void ToggleTheme()
+    private void SetTheme(string? mode)
     {
-        App.ToggleTheme();
+        if (mode == null) return;
+
+        ThemeMode = mode;
+    }
+
+    private void ApplyTheme()
+    {
+        bool isDark = _themeMode switch
+        {
+            "Dark" => true,
+            "Light" => false,
+            "System" => App.IsDarkTheme, // 使用系统当前主题
+            _ => false
+        };
+        App.IsDarkTheme = isDark;
+    }
+
+    private void CloseWindow()
+    {
+        global::System.Windows.Application.Current.MainWindow?.Close();
+    }
+
+    private void OpenDocumentation()
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://ccnazhkotoeu.feishu.cn/wiki/ZOb3wJD3hiLVGMklyiZcsaaQnwc?from=from_copylink",
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            _toastService?.ShowError($"打开文档失败: {ex.Message}");
+        }
     }
 
     private void LoadConfig()
@@ -236,7 +323,7 @@ public class MainViewModel : INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"加载配置失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"加载配置失败: {ex.Message}");
         }
     }
 
@@ -244,19 +331,19 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (string.IsNullOrWhiteSpace(BaseUrl))
         {
-            WpfMessageBox.Show("请输入 Base URL", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _toastService?.ShowWarning("请输入 Base URL");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ApiKey))
         {
-            WpfMessageBox.Show("请输入 API Key", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _toastService?.ShowWarning("请输入 API Key");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ModelName))
         {
-            WpfMessageBox.Show("请输入模型名称", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _toastService?.ShowWarning("请输入模型名称");
             return;
         }
 
@@ -274,11 +361,11 @@ public class MainViewModel : INotifyPropertyChanged
 
             if (result.IsSuccess)
             {
-                WpfMessageBox.Show("连接成功！", "测试结果", MessageBoxButton.OK, MessageBoxImage.Information);
+                _toastService?.ShowSuccess("连接成功！");
             }
             else
             {
-                WpfMessageBox.Show($"连接失败: {result.ErrorMessage}", "测试结果", MessageBoxButton.OK, MessageBoxImage.Error);
+                _toastService?.ShowError($"连接失败: {result.ErrorMessage}");
             }
         }
         finally
@@ -291,13 +378,13 @@ public class MainViewModel : INotifyPropertyChanged
     {
         if (string.IsNullOrWhiteSpace(BaseUrl))
         {
-            WpfMessageBox.Show("Base URL 不能为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _toastService?.ShowWarning("Base URL 不能为空");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(ModelName))
         {
-            WpfMessageBox.Show("模型名称不能为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _toastService?.ShowWarning("模型名称不能为空");
             return;
         }
 
@@ -320,11 +407,11 @@ public class MainViewModel : INotifyPropertyChanged
 
             _configManager.SaveConfig(config);
 
-            WpfMessageBox.Show("配置已保存", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            _toastService?.ShowSuccess("配置已保存");
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"保存配置失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"保存配置失败: {ex.Message}");
         }
         finally
         {
@@ -352,12 +439,12 @@ public class MainViewModel : INotifyPropertyChanged
             }
             else
             {
-                WpfMessageBox.Show("日志文件不存在", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                _toastService?.ShowWarning("日志文件不存在");
             }
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"打开日志文件失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"打开日志文件失败: {ex.Message}");
         }
     }
 
@@ -371,11 +458,11 @@ public class MainViewModel : INotifyPropertyChanged
                 LogPath = LogPath
             });
             logger.Clear();
-            WpfMessageBox.Show("日志已清除", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            _toastService?.ShowSuccess("日志已清除");
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"清除日志失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"清除日志失败: {ex.Message}");
         }
     }
 
@@ -401,18 +488,14 @@ public class MainViewModel : INotifyPropertyChanged
     {
         try
         {
-            // 获取 CLI 可执行文件路径（右击分析需要调用 CLI 静默模式）
             var exePath = GetCliExecutablePath();
-
-            // 注册右键菜单
             _registryManager.RegisterContextMenu(exePath);
-
             RefreshRegistrationStatus();
-            WpfMessageBox.Show("已成功添加到右键菜单！\n提示: 按住 Ctrl 选中两个文件即可使用", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            _toastService?.ShowSuccess("已成功添加到右键菜单！\n提示: 按住 Ctrl 选中两个文件即可使用");
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"注册失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"注册失败: {ex.Message}");
         }
     }
 
@@ -421,13 +504,12 @@ public class MainViewModel : INotifyPropertyChanged
         try
         {
             _registryManager.UnregisterContextMenu();
-
             RefreshRegistrationStatus();
-            WpfMessageBox.Show("已从右键菜单移除", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            _toastService?.ShowSuccess("已从右键菜单移除");
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"移除失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"移除失败: {ex.Message}");
         }
     }
 
@@ -469,7 +551,7 @@ public class MainViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(NotRegistered));
     }
 
-    private async Task RefreshReleasesAsync()
+    public async Task RefreshReleasesAsync()
     {
         IsReleaseLoading = true;
         ReleaseLoadError = "加载中...";
@@ -480,11 +562,17 @@ public class MainViewModel : INotifyPropertyChanged
 
             Releases = new ObservableCollection<ReleaseInfo>(releases);
             ReleaseLoadError = Releases.Count == 0 ? "暂无可用稳定版" : string.Empty;
+
+            if (Releases.Count > 0)
+            {
+                _toastService?.ShowSuccess($"已加载 {Releases.Count} 个版本");
+            }
         }
         catch (Exception ex)
         {
             ReleaseLoadError = $"加载版本列表失败: {ex.Message}";
             Releases.Clear();
+            _toastService?.ShowError($"加载版本列表失败: {ex.Message}");
         }
         finally
         {
@@ -501,7 +589,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         if (string.IsNullOrWhiteSpace(release.DownloadUrl))
         {
-            WpfMessageBox.Show("下载地址为空", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _toastService?.ShowWarning("下载地址为空");
             return;
         }
 
@@ -512,10 +600,11 @@ public class MainViewModel : INotifyPropertyChanged
                 FileName = release.DownloadUrl,
                 UseShellExecute = true
             });
+            _toastService?.ShowSuccess("正在打开下载页面...");
         }
         catch (Exception ex)
         {
-            WpfMessageBox.Show($"打开下载链接失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _toastService?.ShowError($"打开下载链接失败: {ex.Message}");
         }
     }
 

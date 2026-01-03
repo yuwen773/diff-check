@@ -1,8 +1,10 @@
+using System;
 using System.Configuration;
 using System.Data;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using Microsoft.Win32;
 using WpfApplication = System.Windows.Application;
 
 namespace AI.DiffAssistant.GUI;
@@ -14,9 +16,13 @@ public partial class App : WpfApplication
 {
     private const string MutexName = "AI.DiffAssistant.SingleInstance.Mutex";
     private Mutex? _mutex;
+    private static bool _isDarkTheme = false;
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        // 检测系统主题并应用 (必须在窗口创建前)
+        DetectAndApplySystemTheme();
+
         // 检查是否已有实例在运行
         bool createdNew;
         _mutex = new Mutex(true, MutexName, out createdNew);
@@ -30,6 +36,43 @@ public partial class App : WpfApplication
         }
 
         base.OnStartup(e);
+    }
+
+    /// <summary>
+    /// 检测系统主题并应用
+    /// </summary>
+    private static void DetectAndApplySystemTheme()
+    {
+        try
+        {
+            // 检查 Windows 注册表中的主题设置
+            // 使用 64位和32位视图
+            using var key32 = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32);
+            using var key64 = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64);
+
+            object? appsUseLightTheme = key32.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")?.GetValue("AppsUseLightTheme")
+                                ?? key64.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")?.GetValue("AppsUseLightTheme");
+
+            if (appsUseLightTheme != null)
+            {
+                // AppsUseLightTheme 为 1 表示浅色主题，0 表示深色主题
+                int themeValue = Convert.ToInt32(appsUseLightTheme);
+                _isDarkTheme = themeValue == 0;
+                ApplyTheme();
+            }
+            else
+            {
+                // 默认使用浅色主题
+                _isDarkTheme = false;
+                ApplyTheme();
+            }
+        }
+        catch
+        {
+            // 如果检测失败，使用浅色主题
+            _isDarkTheme = false;
+            ApplyTheme();
+        }
     }
 
     /// <summary>
@@ -80,7 +123,6 @@ public partial class App : WpfApplication
     private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
     private const int SW_RESTORE = 9;
-    private static bool _isDarkTheme = false;
 
     public static bool IsDarkTheme
     {
@@ -102,15 +144,18 @@ public partial class App : WpfApplication
 
     private static void ApplyTheme()
     {
+        // 资源合并顺序: LightTheme[0], DarkTheme[1], AcrylicBrushes[2], Animations[3], CommonControls[4]
         var themeUri = IsDarkTheme ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml";
 
-        // 重新加载资源字典
         if (Current?.Resources.MergedDictionaries.Count > 0)
         {
-            var dict = Current.Resources.MergedDictionaries[0];
-            if (dict.Source?.OriginalString != themeUri)
+            // 主题资源在索引 0 和 1
+            foreach (var dict in Current.Resources.MergedDictionaries.Take(2))
             {
-                dict.Source = new Uri(themeUri, UriKind.Relative);
+                if (dict.Source?.OriginalString.Contains("Theme") == true)
+                {
+                    dict.Source = new Uri(themeUri, UriKind.Relative);
+                }
             }
         }
     }

@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dotnet new sln:*)",
       "Bash(dotnet new:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(openspec list)"
     ]
   }
 }
