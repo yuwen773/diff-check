@@ -25,3 +25,11 @@ NUL
 # 项目特定
 src/publishcli/
 EOF
+
+# 项目内置
+
+openspec/
+publish 
+test/
+*.zip
+backup/

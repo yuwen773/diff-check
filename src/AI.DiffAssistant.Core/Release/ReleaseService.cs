@@ -27,6 +27,7 @@ public class ReleaseService
     {
         _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _baseUri = new Uri(apiBaseUrl ?? DefaultApiBaseUrl);
+        _httpClient.DefaultRequestHeaders.Authorization = null;
     }
 
     public async Task<IReadOnlyList<ReleaseInfo>> GetStableReleasesAsync(
@@ -47,11 +48,8 @@ public class ReleaseService
         var requestUri = new Uri(_baseUri, $"/repos/{owner}/{repo}/releases");
         using var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
-
-        if (!_httpClient.DefaultRequestHeaders.UserAgent.Any())
-        {
-            request.Headers.UserAgent.Add(new ProductInfoHeaderValue(UserAgent, "1.0"));
-        }
+        request.Headers.Authorization = null;
+        request.Headers.UserAgent.Add(new ProductInfoHeaderValue(UserAgent, "1.0"));
 
         using var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();

@@ -25,7 +25,8 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly AiService _aiService;
     private readonly RegistryManager _registryManager;
     private readonly ReleaseService _releaseService;
-    private readonly HttpClient _httpClient;
+    private readonly HttpClient _aiHttpClient;
+    private readonly HttpClient _releaseHttpClient;
 
     // 绑定属性
     private string _baseUrl = string.Empty;
@@ -50,11 +51,12 @@ public class MainViewModel : INotifyPropertyChanged
 
     public MainViewModel()
     {
-        _httpClient = new HttpClient();
+        _aiHttpClient = new HttpClient();
+        _releaseHttpClient = new HttpClient();
         _configManager = new ConfigManager();
-        _aiService = new AiService(_httpClient);
+        _aiService = new AiService(_aiHttpClient);
         _registryManager = new RegistryManager();
-        _releaseService = new ReleaseService(_httpClient);
+        _releaseService = new ReleaseService(_releaseHttpClient);
 
         // 初始化命令
         TestConnectionCommand = new RelayCommand(async _ => await TestConnectionAsync(), _ => IsNotTesting);
@@ -431,20 +433,53 @@ public class MainViewModel : INotifyPropertyChanged
 
     private void RefreshRegistrationStatus()
     {
-        IsRegistered = _registryManager.IsRegistered();
+        if (!_registryManager.IsRegistered())
+        {
+            IsRegistered = false;
+            OnPropertyChanged(nameof(NotRegistered));
+            return;
+        }
+
+        var registeredPath = _registryManager.GetRegisteredPath();
+        if (string.IsNullOrWhiteSpace(registeredPath))
+        {
+            IsRegistered = false;
+            OnPropertyChanged(nameof(NotRegistered));
+            return;
+        }
+
+        if (IsCliExecutable(registeredPath))
+        {
+            IsRegistered = true;
+            OnPropertyChanged(nameof(NotRegistered));
+            return;
+        }
+
+        try
+        {
+            var cliPath = GetCliExecutablePath();
+            _registryManager.RegisterContextMenu(cliPath);
+            IsRegistered = true;
+        }
+        catch
+        {
+            IsRegistered = false;
+        }
+
         OnPropertyChanged(nameof(NotRegistered));
     }
 
     private async Task RefreshReleasesAsync()
     {
         IsReleaseLoading = true;
-        ReleaseLoadError = string.Empty;
+        ReleaseLoadError = "加载中...";
 
         try
         {
             var releases = await _releaseService.GetStableReleasesAsync("yuwen773", "diff-check");
 
             Releases = new ObservableCollection<ReleaseInfo>(releases);
+            ReleaseLoadError = Releases.Count == 0 ? "暂无可用稳定版" : string.Empty;
         }
         catch (Exception ex)
         {
@@ -493,11 +528,26 @@ public class MainViewModel : INotifyPropertyChanged
         var directory = Path.GetDirectoryName(currentPath);
         var cliPath = Path.Combine(directory ?? "", "diff-check-cli.exe");
 
-        // 如果 CLI 不存在（开发环境），使用当前路径
-        if (!System.IO.File.Exists(cliPath))
-            return currentPath;
+        if (File.Exists(cliPath))
+        {
+            return cliPath;
+        }
 
-        return cliPath;
+        if (!string.IsNullOrWhiteSpace(directory))
+        {
+            var siblingCliPath = Path.GetFullPath(Path.Combine(directory, "..", "cli", "diff-check-cli.exe"));
+            if (File.Exists(siblingCliPath))
+            {
+                return siblingCliPath;
+            }
+        }
+
+        throw new FileNotFoundException("未找到 diff-check-cli.exe，请将其与 GUI 放在同一目录或 publish/cli 目录。");
+    }
+
+    private static bool IsCliExecutable(string path)
+    {
+        return path.EndsWith("diff-check-cli.exe", StringComparison.OrdinalIgnoreCase);
     }
 
     private static string GetExecutablePath()
