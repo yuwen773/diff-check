@@ -3,9 +3,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
-using AI.DiffAssistant.GUI.Views;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AI.DiffAssistant.GUI;
 
@@ -17,7 +22,6 @@ public class SystemTrayManager : IDisposable
     private readonly MainWindow _mainWindow;
     private NotifyIcon? _notifyIcon;
     private ContextMenuStrip? _contextMenu;
-    private AboutWindow? _aboutWindow;
 
     public SystemTrayManager(MainWindow mainWindow)
     {
@@ -31,14 +35,26 @@ public class SystemTrayManager : IDisposable
     {
         try
         {
-            CreateNotifyIcon();
-            CreateContextMenu();
-            SetupEventHandlers();
+            // 确保在 UI 线程上初始化
+            if (_mainWindow.Dispatcher.CheckAccess())
+            {
+                CreateNotifyIcon();
+                CreateContextMenu();
+                SetupEventHandlers();
+            }
+            else
+            {
+                _mainWindow.Dispatcher.Invoke(() =>
+                {
+                    CreateNotifyIcon();
+                    CreateContextMenu();
+                    SetupEventHandlers();
+                });
+            }
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"托盘初始化失败: {ex.Message}");
-            // 即使托盘初始化失败，程序也应能正常运行
         }
     }
 
@@ -47,6 +63,8 @@ public class SystemTrayManager : IDisposable
     /// </summary>
     private void CreateNotifyIcon()
     {
+        if (_notifyIcon != null) return;
+
         _notifyIcon = new NotifyIcon
         {
             Text = "diff-check",
@@ -102,8 +120,8 @@ public class SystemTrayManager : IDisposable
     {
         using var bitmap = new Bitmap(16, 16);
         using var graphics = Graphics.FromImage(bitmap);
-        graphics.Clear(Color.Transparent);
-        using var pen = new Pen(Color.Blue, 2);
+        graphics.Clear(System.Drawing.Color.Transparent);
+        using var pen = new System.Drawing.Pen(System.Drawing.Color.Blue, 2);
         graphics.DrawEllipse(pen, 2, 2, 12, 12);
         return Icon.FromHandle(bitmap.GetHicon());
     }
@@ -125,8 +143,8 @@ public class SystemTrayManager : IDisposable
         // 分隔线
         _contextMenu.Items.Add(new ToolStripSeparator());
 
-        // 关于项
-        var aboutItem = new ToolStripMenuItem("关于", null, (s, e) => ShowAboutWindow())
+        // 关于项 - 切换到主窗口的"关于"Tab
+        var aboutItem = new ToolStripMenuItem("关于", null, (s, e) => ShowAboutTab())
         {
             Name = "About"
         };
@@ -152,7 +170,7 @@ public class SystemTrayManager : IDisposable
         {
             if (e.Button == MouseButtons.Left)
             {
-                ToggleMainWindow();
+                ShowMainWindow();
             }
         };
     }
@@ -164,76 +182,178 @@ public class SystemTrayManager : IDisposable
     {
         RunOnUiThread(() =>
         {
-            _mainWindow.Show();
-            _mainWindow.WindowState = WindowState.Normal;
-            _mainWindow.Activate();
-            _mainWindow.Focus();
-        });
-    }
-
-    /// <summary>
-    /// 隐藏主窗口
-    /// </summary>
-    private void HideMainWindow()
-    {
-        RunOnUiThread(() => _mainWindow.Hide());
-    }
-
-    /// <summary>
-    /// 切换主窗口显示状态
-    /// </summary>
-    private void ToggleMainWindow()
-    {
-        RunOnUiThread(() =>
-        {
-            if (_mainWindow.IsVisible)
+            try
             {
-                _mainWindow.Hide();
-            }
-            else
-            {
+                System.Diagnostics.Debug.WriteLine($"[托盘] ShowMainWindow - IsVisible={_mainWindow.IsVisible}, Visibility={_mainWindow.Visibility}");
+                _mainWindow.RestoreFromTray();
+
+                // 强制重置窗口状态
+                _mainWindow.Visibility = Visibility.Hidden;
                 _mainWindow.Show();
+                _mainWindow.Hide();
+
+                // 强制创建窗口句柄
+                var tempHandle = new WindowInteropHelper(_mainWindow).Handle;
+                System.Diagnostics.Debug.WriteLine($"[托盘] 临时句柄: {tempHandle}");
+
+                // 完全重置窗口
+                _mainWindow.WindowState = WindowState.Minimized;
                 _mainWindow.WindowState = WindowState.Normal;
+                _mainWindow.Show();
                 _mainWindow.Activate();
                 _mainWindow.Focus();
+
+                var handle = new WindowInteropHelper(_mainWindow).Handle;
+                System.Diagnostics.Debug.WriteLine($"[托盘] 最终句柄: {handle}");
+
+                if (handle != IntPtr.Zero)
+                {
+                    // 确保窗口显示并激活
+                    ShowWindow(handle, SW_RESTORE);
+                    SetWindowPos(handle, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+                    SetForegroundWindow(handle);
+                }
+
+                System.Diagnostics.Debug.WriteLine($"[托盘] 最终 - IsVisible={_mainWindow.IsVisible}");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"显示主窗口失败: {ex.Message}");
             }
         });
     }
 
     /// <summary>
-    /// 显示关于窗口
+    /// 闪烁窗口和任务栏图标
     /// </summary>
-    private void ShowAboutWindow()
+    private void FlashWindow(IntPtr handle, int count)
+    {
+        try
+        {
+            var flashInfo = new FLASHWINFO
+            {
+                cbSize = (uint)Marshal.SizeOf<FLASHWINFO>(),
+                hwnd = handle,
+                dwFlags = FLASHW_ALL,
+                uCount = (uint)count,
+                dwTimeout = 100
+            };
+            FlashWindowEx(ref flashInfo);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"闪烁窗口失败: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// 切换到主窗口的"关于"页面
+    /// </summary>
+    private void ShowAboutTab()
     {
         RunOnUiThread(() =>
         {
             try
             {
-                if (_aboutWindow == null || !_aboutWindow.IsVisible)
+                System.Diagnostics.Debug.WriteLine($"[托盘] ShowAboutTab - IsVisible={_mainWindow.IsVisible}");
+                _mainWindow.RestoreFromTray();
+
+                // 强制重置窗口状态
+                _mainWindow.Visibility = Visibility.Hidden;
+                _mainWindow.Show();
+                _mainWindow.Hide();
+
+                _mainWindow.WindowState = WindowState.Minimized;
+                _mainWindow.WindowState = WindowState.Normal;
+                _mainWindow.Show();
+
+                // 切换到"关于"Tab
+                var tabControl = FindVisualChild<System.Windows.Controls.TabControl>(_mainWindow);
+                if (tabControl != null)
                 {
-                    _aboutWindow = new AboutWindow
+                    foreach (var item in tabControl.Items)
                     {
-                        Owner = _mainWindow.IsVisible ? _mainWindow : null,
-                        WindowStartupLocation = _mainWindow.IsVisible
-                            ? WindowStartupLocation.CenterOwner
-                            : WindowStartupLocation.CenterScreen
-                    };
-                    _aboutWindow.Closed += (_, _) => _aboutWindow = null;
-                    _aboutWindow.Show();
-                    _aboutWindow.Topmost = true;
-                    _aboutWindow.Activate();
-                    _aboutWindow.Topmost = false;
+                        if (item is System.Windows.Controls.TabItem tabItem && tabItem.Header?.ToString() == "关于")
+                        {
+                            tabItem.IsSelected = true;
+                            break;
+                        }
+                    }
                 }
-                else
+
+                var handle = new WindowInteropHelper(_mainWindow).Handle;
+                if (handle != IntPtr.Zero)
                 {
-                    _aboutWindow.Activate();
+                    ShowWindow(handle, SW_RESTORE);
+                    SetWindowPos(handle, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+                    SetForegroundWindow(handle);
                 }
+
+                _mainWindow.Activate();
+                _mainWindow.Focus();
+
+                System.Diagnostics.Debug.WriteLine($"[托盘] About 窗口应已显示");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"显示关于窗口失败: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"显示关于页面失败: {ex.Message}");
             }
         });
+    }
+
+    // Windows API 常量
+    private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+    private static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+    private static readonly IntPtr HWND_TOP = new IntPtr(0);
+    private const uint SWP_NOMOVE = 0x0002;
+    private const uint SWP_NOSIZE = 0x0001;
+    private const uint SWP_SHOWWINDOW = 0x0040;
+    private const int SW_RESTORE = 9;
+    private const int SW_SHOW = 5;
+    private const int SW_MINIMIZE = 6;
+    private const int FLASHW_STOP = 0;
+    private const int FLASHW_CAPTION = 0x0001;
+    private const int FLASHW_TRAY = 0x0002;
+    private const int FLASHW_ALL = FLASHW_CAPTION | FLASHW_TRAY;
+    private const int FLASHW_TIMERNOFG = 0x000C;
+
+    [DllImport("user32.dll")]
+    private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("user32.dll")]
+    private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct FLASHWINFO
+    {
+        public uint cbSize;
+        public IntPtr hwnd;
+        public uint dwFlags;
+        public uint uCount;
+        public uint dwTimeout;
+    }
+
+    /// <summary>
+    /// 查找可视子元素
+    /// </summary>
+    private static T? FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is T result)
+                return result;
+            var descendant = FindVisualChild<T>(child);
+            if (descendant != null)
+                return descendant;
+        }
+        return null;
     }
 
     /// <summary>
@@ -252,7 +372,6 @@ public class SystemTrayManager : IDisposable
 
                 _notifyIcon?.Dispose();
                 _contextMenu?.Dispose();
-                _aboutWindow?.Close();
 
                 System.Windows.Application.Current.Shutdown();
             }
@@ -265,6 +384,7 @@ public class SystemTrayManager : IDisposable
 
     private void RunOnUiThread(Action action)
     {
+        // 使用 Dispatcher.Invoke 确保同步执行（关键修复）
         if (_mainWindow.Dispatcher.CheckAccess())
         {
             action();
@@ -289,7 +409,6 @@ public class SystemTrayManager : IDisposable
 
             _notifyIcon?.Dispose();
             _contextMenu?.Dispose();
-            _aboutWindow?.Close();
         }
         catch (Exception ex)
         {

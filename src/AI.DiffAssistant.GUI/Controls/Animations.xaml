@@ -1,0 +1,144 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ========== 淡入淡出动画 ========== -->
+    <Storyboard x:Key="FadeIn200">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"
+                         Duration="0:0:0.2"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="FadeOut200">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"
+                         Duration="0:0:0.2"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="FadeIn150">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="FadeOut150">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <!-- ========== 缩放动画 ========== -->
+    <Storyboard x:Key="ScaleUp102">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                         From="1.0" To="1.02"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                         From="1.0" To="1.02"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="ScaleDown98">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                         From="1.02" To="0.98"
+                         Duration="0:0:0.1"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                         From="1.02" To="0.98"
+                         Duration="0:0:0.1"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="ScaleNormal">
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                         To="1.0"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                         To="1.0"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <!-- ========== 窗口动画 ========== -->
+    <Storyboard x:Key="WindowFadeIn">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"
+                         Duration="0:0:0.2"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                         From="0.95" To="1.0"
+                         Duration="0:0:0.2"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                         From="0.95" To="1.0"
+                         Duration="0:0:0.2"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="WindowFadeOut">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                         From="1.0" To="0.95"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                         From="1.0" To="0.95"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <!-- ========== Toast 动画 ========== -->
+    <Storyboard x:Key="ToastSlideIn">
+        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                            From="0,0,-400,0" To="0,0,0,0"
+                            Duration="0:0:0.25"
+                            FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1"
+                         Duration="0:0:0.2"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="ToastSlideOut">
+        <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                            From="0,0,0,0" To="0,0,-400,0"
+                            Duration="0:0:0.2"
+                            FillBehavior="HoldEnd"/>
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"
+                         Duration="0:0:0.15"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <Storyboard x:Key="ToastFadeOut">
+        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="1" To="0"
+                         Duration="0:0:0.3"
+                         FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <!-- ========== 颜色过渡动画 ========== -->
+    <Storyboard x:Key="BackgroundFade200">
+        <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                        Duration="0:0:0.2"
+                        FillBehavior="HoldEnd"/>
+    </Storyboard>
+
+    <!-- ========== Loading 旋转动画 ========== -->
+    <Storyboard x:Key="SpinAnimation" TargetName="loadingRing" TargetProperty="Angle">
+        <DoubleAnimation By="360" Duration="0:0:1" RepeatBehavior="Forever"/>
+    </Storyboard>
+
+    <!-- ========== 动画缓动函数 ========== -->
+    <ExponentialEase x:Key="EaseOutQuart" EasingMode="EaseOut" Exponent="4"/>
+    <SineEase x:Key="EaseInOut" EasingMode="EaseInOut"/>
+
+</ResourceDictionary>

@@ -26,8 +26,11 @@
 
     <!-- 成功/警告/错误颜色 -->
     <SolidColorBrush x:Key="SuccessBrush" Color="#28A745"/>
+    <SolidColorBrush x:Key="SuccessLightBrush" Color="#D4EDDA"/>
     <SolidColorBrush x:Key="WarningBrush" Color="#FFC107"/>
+    <SolidColorBrush x:Key="WarningLightBrush" Color="#FFF3CD"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="#DC3545"/>
+    <SolidColorBrush x:Key="ErrorLightBrush" Color="#F8D7DA"/>
 
     <!-- TabControl 样式 -->
     <SolidColorBrush x:Key="TabSelectedBrush" Color="#FFFFFF"/>
@@ -35,4 +38,16 @@
 
     <!-- 分隔线 -->
     <SolidColorBrush x:Key="SeparatorBrush" Color="#E0E0E0"/>
+
+    <!-- Toast 通知颜色 -->
+    <SolidColorBrush x:Key="ToastSuccessBg" Color="#D4EDDA"/>
+    <SolidColorBrush x:Key="ToastSuccessBorder" Color="#28A745"/>
+    <SolidColorBrush x:Key="ToastWarningBg" Color="#FFF3CD"/>
+    <SolidColorBrush x:Key="ToastWarningBorder" Color="#FFC107"/>
+    <SolidColorBrush x:Key="ToastErrorBg" Color="#F8D7DA"/>
+    <SolidColorBrush x:Key="ToastErrorBorder" Color="#DC3545"/>
+
+    <!-- Loading 颜色 -->
+    <SolidColorBrush x:Key="LoadingRingBrush" Color="#0078D4"/>
+    <SolidColorBrush x:Key="LoadingRingTrackBrush" Color="#E0E0E0"/>
 </ResourceDictionary>

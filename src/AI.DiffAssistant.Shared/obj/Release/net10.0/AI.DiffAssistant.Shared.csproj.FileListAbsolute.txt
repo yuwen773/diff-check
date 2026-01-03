@@ -1,12 +1,9 @@
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\bin\Release\net10.0\AI.DiffAssistant.Shared.deps.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\bin\Release\net10.0\AI.DiffAssistant.Shared.dll
-D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\bin\Release\net10.0\AI.DiffAssistant.Shared.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.GeneratedMSBuildEditorConfig.editorconfig
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.AssemblyInfoInputs.cache
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.AssemblyInfo.cs
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.csproj.CoreCompileInputs.cache
-D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.sourcelink.json
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.dll
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\refint\AI.DiffAssistant.Shared.dll
-D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\AI.DiffAssistant.Shared.pdb
 D:\Work\Backend\JAVA\Coding\WorkSpace\differenceDoc\src\AI.DiffAssistant.Shared\obj\Release\net10.0\ref\AI.DiffAssistant.Shared.dll

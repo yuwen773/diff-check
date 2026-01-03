@@ -4,15 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:conv="clr-namespace:AI.DiffAssistant.GUI.Converters"
+        xmlns:controls="clr-namespace:AI.DiffAssistant.GUI.Controls"
         mc:Ignorable="d"
-        Title="diff-check - 配置中心"
-        Height="600" Width="680"
+        Title="Diff Check"
+        Height="600" Width="700"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        Background="{DynamicResource BackgroundBrush}">
+        Background="{DynamicResource BackgroundBrush}"
+        AllowsTransparency="True"
+        WindowStyle="None">
     <Window.Effect>
-        <DropShadowEffect BlurRadius="16" Opacity="0.3" ShadowDepth="4"/>
+        <DropShadowEffect BlurRadius="20" Opacity="0.25" ShadowDepth="4"/>
     </Window.Effect>
+    <Window.RenderTransform>
+        <ScaleTransform x:Name="WindowScale" ScaleX="1" ScaleY="1"/>
+    </Window.RenderTransform>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -25,37 +31,87 @@
                 Background="{DynamicResource SurfaceBrush}"
                 Padding="16,12"
                 BorderThickness="0,0,0,1"
-                BorderBrush="{DynamicResource SeparatorBrush}">
+                BorderBrush="{DynamicResource SeparatorBrush}"
+                MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="0"
-                           Text="diff-check - 配置中心"
-                           FontSize="15"
-                           FontWeight="Bold"
+                           Text="Diff Check"
+                           FontSize="14"
+                           FontWeight="SemiBold"
                            Foreground="{DynamicResource TextPrimaryBrush}"/>
-                <Button Grid.Column="1"
-                        Content="☀/☾"
-                        Width="48"
-                        Height="32"
-                        Command="{Binding ToggleThemeCommand}"
-                        ToolTip="切换深色/浅色主题"
-                        Padding="0"
-                        FontSize="16"
-                        Cursor="Hand"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!-- 最小化按钮 -->
+                    <Button x:Name="MinimizeButton"
+                            Content="─"
+                            Width="36" Height="28"
+                            Margin="0,0,8,0"
+                            Command="{Binding MinimizeCommand}"
+                            ToolTip="最小化"
+                            Padding="0"
+                            FontSize="14"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ThemeToggleButtonStyle}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <!-- 关闭按钮 -->
+                    <Button Content="✕"
+                            Width="36" Height="28"
+                            Command="{Binding CloseCommand}"
+                            ToolTip="关闭"
+                            Padding="0"
+                            FontSize="14"
+                            Background="Transparent"
+                            Foreground="{DynamicResource TextSecondaryBrush}"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="{DynamicResource CornerRadius4}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource ErrorBrush}"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
 
         <!-- 主内容区 -->
         <Border Grid.Row="1" Background="{DynamicResource BackgroundBrush}">
-            <TabControl Margin="12"
+            <TabControl x:Name="MainTabControl"
+                        Margin="12"
                         Background="{DynamicResource BackgroundBrush}"
                         BorderThickness="0"
-                        Padding="0">
+                        Padding="0"
+                        SelectionChanged="TabControl_SelectionChanged"
+                        Style="{DynamicResource FluentTabControlStyle}">
                 <!-- Tab 1: AI 服务设置 -->
-                <TabItem Header="AI 服务">
+                <TabItem Header="AI 服务" FontSize="13">
                     <Grid Margin="20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -74,7 +130,7 @@
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Base URL:"/>
+                            <TextBlock Grid.Column="0" Text="Base URL:" VerticalAlignment="Center"/>
                             <TextBox Grid.Column="1"
                                      Text="{Binding BaseUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="AI API 的基础地址"/>
@@ -87,21 +143,23 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="API Key:"/>
+                            <TextBlock Grid.Column="0" Text="API Key:" VerticalAlignment="Center"/>
                             <PasswordBox Grid.Column="1"
                                          Name="PasswordBox"
-                                         Padding="8,4"
-                                         Height="32"
+                                         Padding="10,6"
+                                         Height="36"
                                          ToolTip="API 密钥"
                                          PasswordChanged="PasswordBox_PasswordChanged"/>
-                            <Button Grid.Column="2"
+                            <Button x:Name="TogglePasswordButton"
+                                    Grid.Column="2"
                                     Content="👁"
-                                    Width="40"
+                                    Width="36" Height="36"
                                     Margin="8,0,0,0"
                                     Padding="0"
                                     FontSize="14"
-                                    Click="TogglePasswordVisibility_Click"
-                                    ToolTip="显示/隐藏密钥"/>
+                                    Command="{Binding TogglePasswordVisibilityCommand}"
+                                    ToolTip="显示/隐藏密钥"
+                                    Style="{StaticResource SecondaryButtonStyle}"/>
                         </Grid>
 
                         <!-- Model Name -->
@@ -110,7 +168,7 @@
                                 <ColumnDefinition Width="90"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Model:"/>
+                            <TextBlock Grid.Column="0" Text="Model:" VerticalAlignment="Center"/>
                             <TextBox Grid.Column="1"
                                      Text="{Binding ModelName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      ToolTip="要使用的模型名称，如 gpt-4o"/>
@@ -122,7 +180,7 @@
                         <!-- 提示词设置标题 -->
                         <TextBlock Grid.Row="4"
                                    Text="提示词设置 (System Prompt)"
-                                   FontWeight="Bold"
+                                   FontWeight="Medium"
                                    FontSize="13"
                                    Margin="0,0,0,10"/>
 
@@ -143,17 +201,19 @@
                             <Button Content="测试连接"
                                     Command="{Binding TestConnectionCommand}"
                                     IsEnabled="{Binding IsNotTesting}"
-                                    Margin="0,0,12,0"/>
+                                    Margin="0,0,12,0"
+                                    Style="{StaticResource PrimaryButtonStyle}"/>
                             <Button Content="保存配置"
                                     Command="{Binding SaveConfigCommand}"
                                     IsEnabled="{Binding IsNotSaving}"
-                                    Margin="12,0,0,0"/>
+                                    Margin="12,0,0,0"
+                                    Style="{StaticResource PrimaryButtonStyle}"/>
                         </StackPanel>
                     </Grid>
                 </TabItem>
 
                 <!-- Tab 2: 系统集成 -->
-                <TabItem Header="系统集成">
+                <TabItem Header="系统集成" FontSize="13">
                     <Grid Margin="20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -166,7 +226,7 @@
                         <!-- 注册状态标题 -->
                         <TextBlock Grid.Row="0"
                                    Text="右键菜单注册"
-                                   FontWeight="Bold"
+                                   FontWeight="Medium"
                                    FontSize="13"
                                    Margin="0,0,0,16"/>
 
@@ -177,11 +237,12 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="当前状态:"/>
+                            <TextBlock Grid.Column="0" Text="当前状态:" VerticalAlignment="Center"/>
                             <TextBlock Grid.Column="1"
                                        Text="{Binding IsRegistered, Converter={conv:BoolToStatusConverter}}"
                                        Foreground="{Binding IsRegistered, Converter={conv:BoolToColorConverter}}"
-                                       FontWeight="Bold"/>
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
                         </Grid>
 
                         <!-- 注册按钮区域 -->
@@ -189,11 +250,13 @@
                             <Button Content="添加到右键菜单"
                                     Command="{Binding RegisterCommand}"
                                     IsEnabled="{Binding NotRegistered}"
-                                    Margin="0,0,12,0"/>
+                                    Margin="0,0,12,0"
+                                    Style="{StaticResource PrimaryButtonStyle}"/>
                             <Button Content="从右键移除"
                                     Command="{Binding UnregisterCommand}"
                                     IsEnabled="{Binding IsRegistered}"
-                                    Margin="12,0,0,0"/>
+                                    Margin="12,0,0,0"
+                                    Style="{StaticResource SecondaryButtonStyle}"/>
                         </StackPanel>
 
                         <!-- 分隔线 -->
@@ -210,7 +273,7 @@
                 </TabItem>
 
                 <!-- Tab 3: 版本下载 -->
-                <TabItem Header="版本下载">
+                <TabItem Header="版本下载" FontSize="13">
                     <Grid Margin="20">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -220,16 +283,19 @@
 
                         <!-- 标题与刷新 -->
                         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-                            <TextBlock Text="稳定版下载" FontWeight="Bold" FontSize="13" Margin="0,0,12,0"/>
+                            <TextBlock Text="稳定版下载" FontWeight="Medium" FontSize="13" Margin="0,0,12,0"/>
                             <Button Content="刷新"
                                     Command="{Binding RefreshReleaseCommand}"
-                                    IsEnabled="{Binding IsNotReleaseLoading}"/>
+                                    IsEnabled="{Binding IsNotReleaseLoading}"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="12,6"
+                                    MinWidth="60"/>
                         </StackPanel>
 
                         <!-- 错误提示 -->
                         <TextBlock Grid.Row="1"
                                    Text="{Binding ReleaseLoadError}"
-                                   Foreground="Red"
+                                   Foreground="{DynamicResource ErrorBrush}"
                                    TextWrapping="Wrap"
                                    Margin="0,0,0,12"/>
 
@@ -241,19 +307,53 @@
                                   IsReadOnly="True"
                                   HeadersVisibility="Column"
                                   GridLinesVisibility="Horizontal"
-                                  RowHeight="32">
+                                  RowHeight="36"
+                                  Background="{DynamicResource BackgroundBrush}"
+                                  BorderBrush="{DynamicResource BorderBrush}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="版本号" Binding="{Binding Version}" Width="120"/>
-                                <DataGridTextColumn Header="发布日期" Binding="{Binding PublishedAt, StringFormat=yyyy-MM-dd}" Width="120"/>
-                                <DataGridTextColumn Header="平台" Binding="{Binding Platform}" Width="80"/>
-                                <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="*"/>
-                                <DataGridTemplateColumn Header="下载" Width="80">
+                                <DataGridTextColumn Header="版本号" Binding="{Binding Version}" Width="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="发布日期" Binding="{Binding PublishedAt, StringFormat=yyyy-MM-dd}" Width="110">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="平台" Binding="{Binding Platform}" Width="70">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="摘要" Binding="{Binding Summary}" Width="*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTemplateColumn Header="操作" Width="80">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Content="下载"
                                                     Command="{Binding DataContext.DownloadReleaseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                     CommandParameter="{Binding}"
-                                                    Padding="6,2"/>
+                                                    Padding="8,4"
+                                                    FontSize="11"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Style="{StaticResource PrimaryButtonStyle}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -262,10 +362,13 @@
                     </Grid>
                 </TabItem>
 
-                <!-- Tab 4: 日志设置 -->
-                <TabItem Header="日志设置">
+                <!-- Tab 4: 设置 -->
+                <TabItem Header="设置" FontSize="13">
                     <Grid Margin="20">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -288,7 +391,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="日志路径:"/>
+                            <TextBlock Grid.Column="0" Text="日志路径:" VerticalAlignment="Center"/>
                             <TextBox Grid.Column="1"
                                      Text="{Binding LogPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      IsEnabled="{Binding LoggingEnabled}"
@@ -297,7 +400,9 @@
                                     Content="浏览..."
                                     Command="{Binding BrowseLogPathCommand}"
                                     IsEnabled="{Binding LoggingEnabled}"
-                                    Margin="8,0,0,0"/>
+                                    Margin="8,0,0,0"
+                                    Padding="12,6"
+                                    Style="{StaticResource SecondaryButtonStyle}"/>
                         </Grid>
 
                         <!-- 日志级别 -->
@@ -310,31 +415,149 @@
                                       IsEnabled="{Binding LoggingEnabled}"/>
                             <CheckBox Content="Warning - 警告"
                                       IsChecked="{Binding LogWarningEnabled, Mode=TwoWay}"
-                                      IsEnabled="{Binding LoggingEnabled}"/>
+                                      IsEnabled="{Binding LoggingEnabled}"
+                                      Margin="0,4,0,0"/>
                         </StackPanel>
 
                         <!-- 分隔线 -->
                         <Separator Grid.Row="4" Margin="0,0,0,16" VerticalAlignment="Center"/>
 
+                        <!-- 主题设置 -->
+                        <TextBlock Grid.Row="5"
+                                   Text="外观设置:"
+                                   FontWeight="Medium"
+                                   FontSize="13"
+                                   Margin="0,0,0,12"/>
+                        <StackPanel Grid.Row="6" HorizontalAlignment="Center" Margin="0,0,0,16" Orientation="Horizontal">
+                            <RadioButton Content="跟随系统" Command="{Binding SetThemeCommand}" CommandParameter="System" IsChecked="{Binding ThemeMode, Converter={conv:ThemeModeConverter}, ConverterParameter=System}" GroupName="Theme" Margin="0,0,16,0"/>
+                            <RadioButton Content="明亮主题" Command="{Binding SetThemeCommand}" CommandParameter="Light" IsChecked="{Binding ThemeMode, Converter={conv:ThemeModeConverter}, ConverterParameter=Light}" GroupName="Theme" Margin="0,0,16,0"/>
+                            <RadioButton Content="暗黑主题" Command="{Binding SetThemeCommand}" CommandParameter="Dark" IsChecked="{Binding ThemeMode, Converter={conv:ThemeModeConverter}, ConverterParameter=Dark}" GroupName="Theme"/>
+                        </StackPanel>
+
+                        <!-- 分隔线 -->
+                        <Separator Grid.Row="7" Margin="0,0,0,16" VerticalAlignment="Center"/>
+
                         <!-- 日志操作按钮 -->
-                        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
+                        <StackPanel Grid.Row="8" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,16">
                             <Button Content="打开日志文件"
                                     Command="{Binding OpenLogFileCommand}"
-                                    Margin="0,0,12,0"/>
+                                    Margin="0,0,12,0"
+                                    Style="{StaticResource SecondaryButtonStyle}"/>
                             <Button Content="清除日志"
                                     Command="{Binding ClearLogFileCommand}"
-                                    Margin="12,0,0,0"/>
+                                    Margin="12,0,0,0"
+                                    Style="{StaticResource SecondaryButtonStyle}"/>
                         </StackPanel>
 
                         <!-- 保存提示 -->
-                        <TextBlock Grid.Row="6"
+                        <TextBlock Grid.Row="9"
                                    Text="注意: 日志配置随主配置一起保存"
                                    FontSize="11"
                                    Foreground="{DynamicResource TextSecondaryBrush}"
                                    HorizontalAlignment="Center"/>
                     </Grid>
                 </TabItem>
+
+<!-- Tab 5: 关于 -->
+<TabItem  Header="关于" FontSize="13">
+    <Grid Margin="20">
+        <!-- 让内容“整体居中”，但内部左对齐 -->
+        <Grid HorizontalAlignment="Center" MaxWidth="720">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- 标题区：建议加图标（可选） -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,4">
+                <!-- 你可以换成 Image 或 WPF-UI 的 Icon -->
+                <TextBlock Text="🟦" FontSize="16" Margin="0,0,8,0"/>
+                <TextBlock Text="Diff Check" FontSize="20" FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <!-- 版本信息（更像桌面 About 的副标题） -->
+            <TextBlock Grid.Row="1"
+                       Text="版本 1.0.0"
+                       FontSize="12"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,16"/>
+
+            <!-- 信息卡片：用 Border 做一个“面板感” -->
+            <Border Grid.Row="2"
+                    Padding="18"
+                    CornerRadius="10"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource ControlStrokeBrush}"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    Margin="0,0,0,12">
+                <StackPanel>
+
+                    <!-- 描述：左对齐 + 可读性更像桌面 -->
+                    <TextBlock Text="AI 驱动的文档差异对比工具，帮助您快速分析两个文件之间的差异。"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               TextWrapping="Wrap"
+                               Margin="0,0,0,14"/>
+
+                    <!-- 信息列表：统一 label 宽度，整体更“规整” -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="作者" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="yuwen773"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="官网" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,8,0,0"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,8,0,0">
+                            <Hyperlink NavigateUri="https://github.com/yuwen773/diff-check" RequestNavigate="Hyperlink_RequestNavigate">
+                                github.com/yuwen773/diff-check
+                            </Hyperlink>
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="官方文档" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,8,0,0"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Margin="0,8,0,0">
+                            <Hyperlink NavigateUri="https://ccnazhkotoeu.feishu.cn/wiki/ZOb3wJD3hiLVGMklyiZcsaaQnwc?from=from_copylink" RequestNavigate="Hyperlink_RequestNavigate">
+                                飞书文档 · 使用说明
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="更新渠道" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,8,0,0"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="GitHub Releases" Margin="0,8,0,0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="版权" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,8,0,0"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="© 2026 Diff Check. 保留所有权利。" Margin="0,8,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- 底部轻量说明（增强“桌面产品质感”） -->
+            <TextBlock Grid.Row="3"
+                       Text="提示：链接将在默认浏览器中打开"
+                       FontSize="11"
+                       Foreground="{DynamicResource TextTertiaryBrush}"
+                       HorizontalAlignment="Center"
+                       Margin="0,4,0,0"/>
+        </Grid>
+    </Grid>
+</TabItem>
             </TabControl>
         </Border>
+
+        <!-- Toast 通知容器 -->
+        <StackPanel x:Name="ToastContainer"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,16,16"
+                    Grid.Row="1"/>
     </Grid>
 </Window>
